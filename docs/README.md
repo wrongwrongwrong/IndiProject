@@ -74,10 +74,10 @@ open http://localhost:3000
 ### Production Deployment
 ```bash
 # Make deployment script executable
-chmod +x deploy.sh
+chmod +x scripts/deploy.sh
 
 # Deploy to Kubernetes
-./deploy.sh
+./scripts/deploy.sh
 
 # Verify deployment
 kubectl get pods -n gameserver-pro
@@ -87,29 +87,45 @@ kubectl get pods -n gameserver-pro
 
 ```
 GameServer Pro/
-├── frontend/
+├── html/                    # Frontend HTML files
 │   ├── index.html          # Main application page
-│   ├── styles.css          # Responsive CSS styling
-│   ├── script.js           # Frontend JavaScript
 │   ├── wallet.html         # Wallet management page
+│   ├── dashboard.html      # User dashboard
+│   ├── admin.html          # Admin dashboard
+│   └── ...                 # Other HTML pages
+├── css/                    # Stylesheets
+│   ├── styles.css          # Main responsive CSS styling
+│   ├── admin-dashboard.css # Admin-specific styles
+│   └── styles-backup.css   # Backup styles
+├── js/                     # JavaScript files
+│   ├── script.js           # Main frontend JavaScript
 │   ├── wallet.js           # Wallet-specific functionality
-│   └── dashboard.html      # User dashboard
-├── backend/
+│   ├── admin-dashboard.js  # Admin dashboard functionality
+│   └── ...                 # Other JS files
+├── backend/                # Backend services
 │   ├── services/
 │   │   ├── wallet-service.js    # Secure wallet service
-│   │   ├── user-service.js      # User management
-│   │   ├── description-service.js # Description generation
-│   │   └── api-gateway.js       # API gateway
+│   │   └── ...                  # Other microservices
 │   ├── database/
 │   │   └── schema.sql           # PostgreSQL schema
 │   ├── package.json             # Dependencies
-│   ├── Dockerfile               # Container configuration
-│   └── docker-compose.yml       # Local development
-├── k8s/
-│   ├── database.yaml            # PostgreSQL deployment
-│   ├── services.yaml             # Microservices deployment
-│   └── nginx.yaml                # Load balancer configuration
-└── deploy.sh                     # Automated deployment script
+│   └── local-server.js          # Local development server
+├── docker/                 # Docker configurations
+│   ├── docker-compose.yml       # Local development environment
+│   ├── docker-compose-enhanced.yml # Enhanced Docker setup
+│   └── Dockerfile               # Container configuration
+├── k8s/                    # Kubernetes configurations
+│   ├── database.yaml           # PostgreSQL deployment
+│   ├── services.yaml           # Microservices deployment
+│   └── nginx.yaml              # Load balancer configuration
+├── scripts/                # Deployment and utility scripts
+│   ├── deploy.sh               # Automated deployment script
+│   └── start-local.sh          # Local development startup
+├── docs/                   # Documentation
+│   ├── README.md               # Project documentation
+│   └── DEBUG-GUIDE.md          # Debugging guide
+└── specs/                  # Project specifications
+    └── Individual Project.pdf  # Project requirements
 ```
 
 ## 💰 Wallet Security Implementation

@@ -450,21 +450,30 @@ Begin your adventure at ${serverName} - where stories come to life!`
 // Static file serving (must come after API routes)
 app.use(express.static(path.join(__dirname, '../')));
 
+// Serve CSS files from css folder
+app.use('/css', express.static(path.join(__dirname, '../css')));
+
+// Serve JS files from js folder
+app.use('/js', express.static(path.join(__dirname, '../js')));
+
+// Serve HTML files from html folder
+app.use('/html', express.static(path.join(__dirname, '../html')));
+
 // Serve the frontend
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../index.html'));
+    res.sendFile(path.join(__dirname, '../html/index.html'));
 });
 
 app.get('/wallet', (req, res) => {
-    res.sendFile(path.join(__dirname, '../wallet.html'));
+    res.sendFile(path.join(__dirname, '../html/wallet.html'));
 });
 
 app.get('/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, '../dashboard.html'));
+    res.sendFile(path.join(__dirname, '../html/dashboard.html'));
 });
 
 app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, '../admin.html'));
+    res.sendFile(path.join(__dirname, '../html/admin.html'));
 });
 
 // Start server
