@@ -64,8 +64,7 @@ git clone https://github.com/gameserver-pro/platform.git
 cd platform
 
 # Start local development environment
-cd backend
-docker-compose up -d
+./scripts/start-local.sh
 
 # Access the application
 open http://localhost:3000

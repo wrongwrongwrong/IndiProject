@@ -44,7 +44,8 @@ function saveBalance(balance) {
 // Mock data for development
 const mockUsers = [
     { id: 1, name: 'John Doe', email: 'john@example.com' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
+    { id: 3, name: 'Admin User', email: 'admin123@redtech.com', isAdmin: true }
 ];
 
 const mockDescriptions = [
@@ -73,16 +74,29 @@ app.get('/api/users', (req, res) => {
 app.post('/api/users/login', (req, res) => {
     const { email, password } = req.body;
     
-    // Simple mock authentication
-    const user = mockUsers.find(u => u.email === email);
-    if (user && password) {
+    // Check for admin login first
+    if (email === 'admin123@redtech.com' && password === '123456') {
+        const user = mockUsers.find(u => u.email === email);
         res.json({
             success: true,
-            user: { id: user.id, name: user.name, email: user.email },
-            token: 'mock-jwt-token-' + user.id
+            user: { id: user.id, name: user.name, email: user.email, isAdmin: true },
+            token: 'mock-admin-jwt-token-' + user.id
         });
+    } else if (email === 'admin123@redtech.com') {
+        // Admin email but wrong password
+        res.status(401).json({ error: 'Invalid admin credentials' });
     } else {
-        res.status(401).json({ error: 'Invalid credentials' });
+        // Regular user authentication
+        const user = mockUsers.find(u => u.email === email && !u.isAdmin);
+        if (user && password) { // Password check is very basic here
+            res.json({
+                success: true,
+                user: { id: user.id, name: user.name, email: user.email },
+                token: 'mock-jwt-token-' + user.id
+            });
+        } else {
+            res.status(401).json({ error: 'Invalid credentials' });
+        }
     }
 });
 

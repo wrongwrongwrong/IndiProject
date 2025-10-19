@@ -794,6 +794,12 @@ function initializeFormHandlers() {
     } else {
         console.log('Description form not found!');
     }
+    
+    // Admin login form
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    if (adminLoginForm) {
+        adminLoginForm.addEventListener('submit', handleAdminLogin);
+    }
 }
 
 // Modal Functions
@@ -882,6 +888,85 @@ function openSignupModal() {
 
 function closeSignupModal() {
     document.getElementById('signupModal').style.display = 'none';
+}
+
+// Admin Login Functions
+function openAdminLogin() {
+    const modal = document.getElementById('adminLoginModal');
+    if (modal) {
+        modal.style.display = 'block';
+    } else {
+        console.error('Admin login modal not found');
+        alert('Admin login modal not found. Please refresh the page.');
+    }
+}
+
+function closeAdminLoginModal() {
+    const modal = document.getElementById('adminLoginModal');
+    if (modal) {
+        modal.style.display = 'none';
+        clearAdminLoginErrors();
+    }
+}
+
+function clearAdminLoginErrors() {
+    const messageDiv = document.getElementById('adminLoginMessage');
+    if (messageDiv) {
+        messageDiv.innerHTML = '';
+        messageDiv.className = 'message';
+    }
+}
+
+function showAdminLoginError(message) {
+    const messageDiv = document.getElementById('adminLoginMessage');
+    if (messageDiv) {
+        messageDiv.innerHTML = message;
+        messageDiv.className = 'message error';
+    } else {
+        console.error('Admin login message element not found');
+        alert('Error: ' + message); // Fallback to alert if element not found
+    }
+}
+
+function showAdminLoginSuccess(message) {
+    const messageDiv = document.getElementById('adminLoginMessage');
+    if (messageDiv) {
+        messageDiv.innerHTML = message;
+        messageDiv.className = 'message success';
+    } else {
+        console.error('Admin login message element not found');
+        alert('Success: ' + message); // Fallback to alert if element not found
+    }
+}
+
+// Handle admin login form submission
+function handleAdminLogin(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const email = formData.get('email');
+    const password = formData.get('password');
+    
+    // Clear any existing errors
+    clearAdminLoginErrors();
+    
+    // Basic validation
+    if (!email || !password) {
+        showAdminLoginError('Please enter both email and password.');
+        return;
+    }
+    
+    // Validate admin credentials
+    if (email === 'admin123@redtech.com' && password === '123456') {
+        showAdminLoginSuccess('Admin login successful! Redirecting to admin dashboard...');
+        
+        // Redirect to admin dashboard after a short delay
+        setTimeout(() => {
+            window.location.href = '/admin';
+        }, 1500);
+    } else {
+        showAdminLoginError('Invalid admin credentials. Please check your email and password.');
+    }
 }
 
 function openDescriptionModal() {
@@ -1547,6 +1632,8 @@ window.openLoginModal = openLoginModal;
 window.closeLoginModal = closeLoginModal;
 window.openSignupModal = openSignupModal;
 window.closeSignupModal = closeSignupModal;
+window.openAdminLogin = openAdminLogin;
+window.closeAdminLoginModal = closeAdminLoginModal;
 window.openDescriptionModal = openDescriptionModal;
 window.closeDescriptionModal = closeDescriptionModal;
 window.switchToSignup = switchToSignup;
