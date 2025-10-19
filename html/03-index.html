@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameServer Pro - Custom Gaming Server Descriptions</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/component.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -12,15 +14,16 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo">
+            <a href="03-index.html" class="nav-logo">
                 <i class="fas fa-gamepad"></i>
                 <span>GameServer Pro</span>
-            </div>
+            </a>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link active" data-lang="home">Home</a></li>
-                <li><a href="services.html" class="nav-link" data-lang="services">Services</a></li>
-                <li><a href="about.html" class="nav-link" data-lang="about">About</a></li>
-                <li><a href="contact.html" class="nav-link" data-lang="contact">Contact</a></li>
+                <li><a href="03-index.html" class="nav-link active" data-lang="home">Home</a></li>
+                <li><a href="05-services.html" class="nav-link" data-lang="services">Services</a></li>
+                <li><a href="06-about.html" class="nav-link" data-lang="about">About</a></li>
+                <li><a href="07-contact.html" class="nav-link" data-lang="contact">Contact</a></li>
+                <li><a href="02-dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i> Dashboard</a></li>
             </ul>
             <div class="nav-auth">
                 <button class="btn-login" onclick="openLoginModal()" data-lang="login">Login</button>
@@ -56,23 +59,60 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-container">
+    <section id="home" class="hero-banner">
+        <div class="container">
             <div class="hero-content">
-                <h1 class="hero-title" data-lang="heroTitle">Professional Gaming Server Descriptions</h1>
-                <p class="hero-subtitle" data-lang="heroSubtitle">Transform your gaming server with custom, professional descriptions that attract players and build thriving communities.</p>
-                <div class="hero-buttons">
-                    <button class="btn-primary" onclick="window.location.href='services.html'" data-lang="getStarted">Get Started</button>
-                    <button class="btn-secondary" onclick="window.location.href='about.html'" data-lang="learnMore">Learn More</button>
+                <div class="hero-text">
+                    <h1 data-lang="heroTitle">Professional Gaming Server Descriptions</h1>
+                    <p class="hero-subtitle" data-lang="heroSubtitle">Transform your gaming server with custom, professional descriptions that attract players and build thriving communities.</p>
+                    <div class="hero-features">
+                        <div class="feature-badge">
+                            <i class="fas fa-check"></i>
+                            <span>AI-Powered</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="fas fa-check"></i>
+                            <span>Professional</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="fas fa-check"></i>
+                            <span>Custom</span>
+                        </div>
+                    </div>
+                    <div class="hero-actions">
+                        <button class="btn-primary" onclick="window.location.href='services.html'" data-lang="getStarted">
+                            <i class="fas fa-rocket"></i>
+                            Get Started
+                        </button>
+                        <button class="btn-secondary" onclick="window.location.href='about.html'" data-lang="learnMore">
+                            <i class="fas fa-info-circle"></i>
+                            Learn More
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="hero-image">
-                <div class="hero-graphic">
-                    <i class="fas fa-server"></i>
-                    <div class="floating-elements">
-                        <div class="floating-icon"><i class="fas fa-users"></i></div>
-                        <div class="floating-icon"><i class="fas fa-crown"></i></div>
-                        <div class="floating-icon"><i class="fas fa-rocket"></i></div>
+                <div class="hero-visual">
+                    <div class="cards-preview">
+                        <div class="preview-card">
+                            <div class="card-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <h4>Server Management</h4>
+                            <p>Professional server descriptions</p>
+                        </div>
+                        <div class="preview-card">
+                            <div class="card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h4>Community Growth</h4>
+                            <p>Attract more players</p>
+                        </div>
+                        <div class="preview-card">
+                            <div class="card-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4>Analytics</h4>
+                            <p>Track your success</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,42 +120,60 @@
     </section>
 
     <!-- Services Overview -->
-    <section id="services" class="services-overview">
+    <section id="services" class="what-we-offer">
         <div class="container">
             <div class="section-header">
                 <h2 data-lang="whatWeOffer">What We Offer</h2>
                 <p data-lang="everythingYouNeed">Everything you need to grow your gaming server</p>
             </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
+            <div class="offer-grid">
+                <div class="offer-card">
+                    <div class="offer-icon">
                         <i class="fas fa-edit"></i>
                     </div>
-                    <h3 data-lang="customDescriptions">Custom Descriptions</h3>
-                    <p data-lang="customDescriptionsDesc">AI-powered descriptions that attract players and showcase your server's unique features.</p>
-                    <button class="btn-service" onclick="openDescriptionGenerator()" data-lang="tryNow">Try Now</button>
+                    <h3 class="offer-title" data-lang="customDescriptions">Custom Descriptions</h3>
+                    <p class="offer-description" data-lang="customDescriptionsDesc">AI-powered descriptions that attract players and showcase your server's unique features.</p>
+                    <ul class="offer-features">
+                        <li><i class="fas fa-check"></i> AI-powered content generation</li>
+                        <li><i class="fas fa-check"></i> Multiple style options</li>
+                        <li><i class="fas fa-check"></i> SEO optimized</li>
+                        <li><i class="fas fa-check"></i> Unlimited revisions</li>
+                    </ul>
+                    <button class="btn-pricing" onclick="openDescriptionGenerator()" data-lang="tryNow">Try Now</button>
                 </div>
                 
-                <div class="service-card">
-                    <div class="service-icon">
+                <div class="offer-card">
+                    <div class="offer-icon">
                         <i class="fas fa-wallet"></i>
                     </div>
-                    <h3 data-lang="digitalWallet">Digital Wallet</h3>
-                    <p data-lang="digitalWalletDesc">Secure payment processing and peer-to-peer transfers for the gaming community.</p>
-                    <button class="btn-service" onclick="openWallet()" data-lang="manageWallet">Manage Wallet</button>
+                    <h3 class="offer-title" data-lang="digitalWallet">Digital Wallet</h3>
+                    <p class="offer-description" data-lang="digitalWalletDesc">Secure payment processing and peer-to-peer transfers for the gaming community.</p>
+                    <ul class="offer-features">
+                        <li><i class="fas fa-check"></i> Secure transactions</li>
+                        <li><i class="fas fa-check"></i> Peer-to-peer transfers</li>
+                        <li><i class="fas fa-check"></i> Transaction history</li>
+                        <li><i class="fas fa-check"></i> Multiple payment methods</li>
+                    </ul>
+                    <button class="btn-pricing" onclick="openWallet()" data-lang="manageWallet">Manage Wallet</button>
                 </div>
                 
-                <div class="service-card">
-                    <div class="service-icon">
+                <div class="offer-card">
+                    <div class="offer-icon">
                         <i class="fas fa-share-alt"></i>
                     </div>
-                    <h3 data-lang="socialSharing">Social Sharing</h3>
-                    <p data-lang="socialSharingDesc">Share your server descriptions and grow your community through social networks.</p>
-                    <button class="btn-service" onclick="openSharing()" data-lang="shareServer">Share Server</button>
+                    <h3 class="offer-title" data-lang="socialSharing">Social Sharing</h3>
+                    <p class="offer-description" data-lang="socialSharingDesc">Share your server descriptions and grow your community through social networks.</p>
+                    <ul class="offer-features">
+                        <li><i class="fas fa-check"></i> Social media integration</li>
+                        <li><i class="fas fa-check"></i> Community building</li>
+                        <li><i class="fas fa-check"></i> Analytics tracking</li>
+                        <li><i class="fas fa-check"></i> Viral sharing tools</li>
+                    </ul>
+                    <button class="btn-pricing" onclick="openSharing()" data-lang="shareServer">Share Server</button>
                 </div>
             </div>
             <div class="services-cta">
-                <a href="services.html" class="btn-primary" data-lang="viewAllServices">View All Services</a>
+                <a href="05-services.html" class="btn-primary" data-lang="viewAllServices">View All Services</a>
             </div>
         </div>
     </section>
@@ -171,7 +229,7 @@
                 <p>Join thousands of gaming communities already using GameServer Pro</p>
                 <div class="cta-buttons">
                     <button class="btn-primary" onclick="openSignupModal()">Start Free Trial</button>
-                    <a href="contact.html" class="btn-secondary">Contact Sales</a>
+                    <a href="07-contact.html" class="btn-secondary">Contact Sales</a>
                 </div>
             </div>
         </div>
@@ -191,28 +249,28 @@
                 <div class="footer-section">
                     <h4>Services</h4>
                     <ul>
-                        <li><a href="services.html">Custom Descriptions</a></li>
-                        <li><a href="wallet.html">Digital Wallet</a></li>
-                        <li><a href="services.html">Social Sharing</a></li>
-                        <li><a href="dashboard.html">Analytics</a></li>
+                        <li><a href="05-services.html">Custom Descriptions</a></li>
+                        <li><a href="04-wallet.html">Digital Wallet</a></li>
+                        <li><a href="05-services.html">Social Sharing</a></li>
+                        <li><a href="02-dashboard.html">Analytics</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>Support</h4>
                     <ul>
-                        <li><a href="contact.html">Help Center</a></li>
-                        <li><a href="contact.html">Documentation</a></li>
-                        <li><a href="contact.html">API Reference</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="07-contact.html">Help Center</a></li>
+                        <li><a href="07-contact.html">Documentation</a></li>
+                        <li><a href="07-contact.html">API Reference</a></li>
+                        <li><a href="07-contact.html">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>Company</h4>
                     <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Privacy Policy</a></li>
-                        <li><a href="contact.html">Terms of Service</a></li>
-                        <li><a href="contact.html">Careers</a></li>
+                        <li><a href="06-about.html">About Us</a></li>
+                        <li><a href="07-contact.html">Privacy Policy</a></li>
+                        <li><a href="07-contact.html">Terms of Service</a></li>
+                        <li><a href="07-contact.html">Careers</a></li>
                         <li><a href="#" onclick="openAdminLogin()">Admin Login</a></li>
                     </ul>
                 </div>

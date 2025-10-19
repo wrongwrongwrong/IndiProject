@@ -640,18 +640,19 @@ function updateElementText(selector, text) {
     });
 }
 
-// Update username display with redaction for classified mode
+// Update username display with redaction for classified mode - removed since welcome message moved to dashboard hero
 function updateUsernameDisplay() {
-    const userElements = document.querySelectorAll('.user-name');
-    userElements.forEach(element => {
-        if (currentLanguage === 'ch') {
-            // Redact username in classified mode
-            element.textContent = 'Welcome, ████████';
-        } else {
-            // Show normal username for other languages
-            element.textContent = 'Welcome, User';
-        }
-    });
+    // Removed .user-name references since welcome message moved to dashboard hero
+    // const userElements = document.querySelectorAll('.user-name');
+    // userElements.forEach(element => {
+    //     if (currentLanguage === 'ch') {
+    //         // Redact username in classified mode
+    //         element.textContent = 'Welcome, ████████';
+    //     } else {
+    //         // Show normal username for other languages
+    //         element.textContent = 'Welcome, User';
+    //     }
+    // });
 }
 
 // Update logo/company name display with redaction for classified mode
@@ -700,9 +701,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // GameServer Pro - Interactive JavaScript Functionality
 
-// Global variables
-let currentUser = null;
-let isLoggedIn = false;
+// Global variables - now managed by AuthManager
+let currentUser = window.authManager ? window.authManager.getCurrentUser() : null;
+let isLoggedIn = window.authManager ? window.authManager.isAuthenticated() : false;
 
 // DOM Content Loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -755,12 +756,16 @@ function initializeSmoothScrolling() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+            const href = this.getAttribute('href');
+            // Only proceed if href is not just '#' and has a valid ID
+            if (href && href !== '#' && href.length > 1) {
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             }
         });
     });
@@ -864,7 +869,6 @@ function updateAuthUI() {
     if (navAuth && isLoggedIn) {
         navAuth.innerHTML = `
             <div class="user-menu">
-                <span class="user-name">Welcome, ${currentUser.name}</span>
                 <button class="btn-logout" onclick="logout()">Logout</button>
             </div>
         `;
@@ -874,27 +878,39 @@ function updateAuthUI() {
 // Modal Functions
 function openLoginModal() {
     clearModalErrors('loginModal');
-    document.getElementById('loginModal').style.display = 'block';
+    const modal = document.getElementById('loginModal');
+    if (modal) {
+        modal.classList.add('active');
+    }
 }
 
 function closeLoginModal() {
-    document.getElementById('loginModal').style.display = 'none';
+    const modal = document.getElementById('loginModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
 }
 
 function openSignupModal() {
     clearModalErrors('signupModal');
-    document.getElementById('signupModal').style.display = 'block';
+    const modal = document.getElementById('signupModal');
+    if (modal) {
+        modal.classList.add('active');
+    }
 }
 
 function closeSignupModal() {
-    document.getElementById('signupModal').style.display = 'none';
+    const modal = document.getElementById('signupModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
 }
 
 // Admin Login Functions
 function openAdminLogin() {
     const modal = document.getElementById('adminLoginModal');
     if (modal) {
-        modal.style.display = 'block';
+        modal.classList.add('active');
     } else {
         console.error('Admin login modal not found');
         alert('Admin login modal not found. Please refresh the page.');
@@ -904,7 +920,7 @@ function openAdminLogin() {
 function closeAdminLoginModal() {
     const modal = document.getElementById('adminLoginModal');
     if (modal) {
-        modal.style.display = 'none';
+        modal.classList.remove('active');
         clearAdminLoginErrors();
     }
 }
@@ -956,17 +972,48 @@ function handleAdminLogin(e) {
         return;
     }
     
-    // Validate admin credentials
-    if (email === 'admin123@redtech.com' && password === '123456') {
-        showAdminLoginSuccess('Admin login successful! Redirecting to admin dashboard...');
+    // Show loading
+    showLoading(e.target.querySelector('.btn-submit'));
+    
+    // Call API for admin login
+    apiCall('/api/users/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+        signal: AbortSignal.timeout(10000) // 10 second timeout
+    })
+    .then(response => {
+        // Check if response is ok
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        hideLoading(e.target.querySelector('.btn-submit'));
         
-        // Redirect to admin dashboard after a short delay
-        setTimeout(() => {
-            window.location.href = '/admin';
-        }, 1500);
-    } else {
-        showAdminLoginError('Invalid admin credentials. Please check your email and password.');
-    }
+        if (data.success && data.user.isAdmin) {
+            showAdminLoginSuccess('Admin login successful! Redirecting to admin dashboard...');
+            
+            // Store admin session
+            localStorage.setItem('gameserverpro_admin', JSON.stringify(data.user));
+            localStorage.setItem('gameserverpro_admin_token', data.token);
+            
+            // Redirect to admin dashboard after a short delay
+            setTimeout(() => {
+                const adminUrl = window.location.port === '5500' ? 'http://localhost:3000/admin' : '/admin';
+                console.log('Redirecting to admin URL:', adminUrl);
+                console.log('Current port:', window.location.port);
+                window.location.href = adminUrl;
+            }, 1500);
+        } else {
+            showAdminLoginError('Invalid admin credentials. Please check your email and password.');
+        }
+    })
+    .catch(error => {
+        hideLoading(e.target.querySelector('.btn-submit'));
+        console.error('Admin login error:', error);
+        showAdminLoginError('Login failed. Please try again.');
+    });
 }
 
 function openDescriptionModal() {
@@ -975,11 +1022,17 @@ function openDescriptionModal() {
         openLoginModal();
         return;
     }
-    document.getElementById('descriptionModal').style.display = 'block';
+    const modal = document.getElementById('descriptionModal');
+    if (modal) {
+        modal.classList.add('active');
+    }
 }
 
 function closeDescriptionModal() {
-    document.getElementById('descriptionModal').style.display = 'none';
+    const modal = document.getElementById('descriptionModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
 }
 
 function switchToSignup() {
@@ -1009,7 +1062,7 @@ function openWallet() {
     
     console.log('Redirecting to wallet.html');
     // Redirect to wallet page
-    window.location.href = 'wallet.html';
+    window.location.href = '04-wallet.html';
 }
 
 function openSharing() {
@@ -1024,7 +1077,7 @@ function openSharing() {
     
     console.log('Redirecting to dashboard.html');
     // Redirect to dashboard to manage and share descriptions
-    window.location.href = 'dashboard.html';
+    window.location.href = '02-dashboard.html';
 }
 
 // Form Handlers
@@ -1035,17 +1088,42 @@ function handleContactForm(e) {
     const data = {
         name: formData.get('name'),
         email: formData.get('email'),
+        subject: formData.get('subject') || 'Contact Form Submission',
         message: formData.get('message')
     };
     
-    // Simulate form submission
+    // Basic validation
+    if (!data.name || !data.email || !data.message) {
+        showMessage('Please fill in all required fields.', 'error');
+        return;
+    }
+    
+    // Show loading
     showLoading(e.target.querySelector('.btn-submit'));
     
-    setTimeout(() => {
+    // Call API for contact form submission
+    apiCall('/api/contact', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        signal: AbortSignal.timeout(10000) // 10 second timeout
+    })
+    .then(response => {
+        // Check if response is ok
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
         hideLoading(e.target.querySelector('.btn-submit'));
-        showMessage('Thank you for your message! We\'ll get back to you soon.', 'success');
+        showMessage(data.message || 'Thank you for your message! We\'ll get back to you soon.', 'success');
         e.target.reset();
-    }, 2000);
+    })
+    .catch(error => {
+        hideLoading(e.target.querySelector('.btn-submit'));
+        console.error('Contact form error:', error);
+        showMessage('Failed to send message. Please try again.', 'error');
+    });
 }
 
 function handleLogin(e) {
@@ -1078,13 +1156,19 @@ function handleLogin(e) {
         hideLoading(e.target.querySelector('.btn-submit'));
         
         if (data.success) {
-            currentUser = data.user;
-            localStorage.setItem('gameserverpro_user', JSON.stringify(currentUser));
-            localStorage.setItem('gameserverpro_token', data.token);
-            isLoggedIn = true;
+            // Use AuthManager for centralized auth state management
+            if (window.authManager) {
+                window.authManager.login(data.user, data.token);
+            } else {
+                // Fallback to old method if authManager not available
+                currentUser = data.user;
+                localStorage.setItem('gameserverpro_user', JSON.stringify(currentUser));
+                localStorage.setItem('gameserverpro_token', data.token);
+                isLoggedIn = true;
+                updateAuthUI();
+            }
             
             closeLoginModal();
-            updateAuthUI();
             showMessage('Login successful!', 'success');
             e.target.reset();
         } else {
@@ -1184,13 +1268,19 @@ function handleSignup(e) {
         hideLoading(e.target.querySelector('.btn-submit'));
         
         if (data.success) {
-            currentUser = data.user;
-            localStorage.setItem('gameserverpro_user', JSON.stringify(currentUser));
-            localStorage.setItem('gameserverpro_token', data.token);
-            isLoggedIn = true;
+            // Use AuthManager for centralized auth state management
+            if (window.authManager) {
+                window.authManager.login(data.user, data.token);
+            } else {
+                // Fallback to old method if authManager not available
+                currentUser = data.user;
+                localStorage.setItem('gameserverpro_user', JSON.stringify(currentUser));
+                localStorage.setItem('gameserverpro_token', data.token);
+                isLoggedIn = true;
+                updateAuthUI();
+            }
             
             closeSignupModal();
-            updateAuthUI();
             showMessage('Account created successfully!', 'success');
             e.target.reset();
         } else {
@@ -1462,20 +1552,61 @@ function hideLoading(button) {
 }
 
 function logout() {
-    localStorage.removeItem('gameserverpro_user');
-    currentUser = null;
-    isLoggedIn = false;
-    
-    // Reset UI
-    const navAuth = document.querySelector('.nav-auth');
-    if (navAuth) {
-        navAuth.innerHTML = `
-            <button class="btn-login" onclick="openLoginModal()">Login</button>
-            <button class="btn-signup" onclick="openSignupModal()">Sign Up</button>
-        `;
+    // Use AuthManager for centralized auth state management
+    if (window.authManager) {
+        window.authManager.logout();
+    } else {
+        // Fallback to old method if authManager not available
+        localStorage.removeItem('gameserverpro_user');
+        localStorage.removeItem('gameserverpro_token');
+        currentUser = null;
+        isLoggedIn = false;
+        
+        // Reset UI
+        const navAuth = document.querySelector('.nav-auth');
+        if (navAuth) {
+            navAuth.innerHTML = `
+                <button class="btn-login" onclick="openLoginModal()">Login</button>
+                <button class="btn-signup" onclick="openSignupModal()">Sign Up</button>
+            `;
+        }
     }
     
     showMessage('Logged out successfully!', 'success');
+}
+
+// Navigation Functions
+function openLogin() {
+    openLoginModal();
+}
+
+function openSignup() {
+    openSignupModal();
+}
+
+function scrollToSection(sectionId) {
+    const element = document.getElementById(sectionId);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function exportData() {
+    // Export user data functionality
+    const userData = {
+        user: AuthManager.getCurrentUser(),
+        timestamp: new Date().toISOString()
+    };
+    
+    const dataStr = JSON.stringify(userData, null, 2);
+    const dataBlob = new Blob([dataStr], {type: 'application/json'});
+    
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(dataBlob);
+    link.download = `gameserverpro-data-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    
+    showMessage('Data exported successfully!', 'success');
 }
 
 // Scroll Functions
@@ -1630,8 +1761,10 @@ document.addEventListener('DOMContentLoaded', initializeScrollAnimations);
 // Export functions for global access
 window.openLoginModal = openLoginModal;
 window.closeLoginModal = closeLoginModal;
+window.openLogin = openLogin;
 window.openSignupModal = openSignupModal;
 window.closeSignupModal = closeSignupModal;
+window.openSignup = openSignup;
 window.openAdminLogin = openAdminLogin;
 window.closeAdminLoginModal = closeAdminLoginModal;
 window.openDescriptionModal = openDescriptionModal;
@@ -1643,6 +1776,10 @@ window.openWallet = openWallet;
 window.openSharing = openSharing;
 window.scrollToServices = scrollToServices;
 window.scrollToAbout = scrollToAbout;
+window.scrollToSection = scrollToSection;
 window.regenerateDescription = regenerateDescription;
 window.saveDescription = saveDescription;
 window.logout = logout;
+window.toggleLanguageDropdown = toggleLanguageDropdown;
+window.switchLanguage = switchLanguage;
+window.exportData = exportData;

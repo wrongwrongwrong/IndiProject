@@ -257,10 +257,16 @@ function displayUsers() {
             <div class="data-info">
                 <h4>${user.name}</h4>
                 <p>${user.email}</p>
+                ${user.isAdmin ? '<span class="admin-badge">Admin</span>' : ''}
             </div>
             <div class="data-meta">
                 <span>ID: ${user.id}</span>
                 <span>Active</span>
+            </div>
+            <div class="data-actions">
+                <button class="btn-delete" onclick="deleteUser(${user.id}, '${user.name}')" ${user.isAdmin ? 'disabled title="Cannot delete admin user"' : ''}>
+                    <i class="fas fa-trash"></i> Delete
+                </button>
             </div>
         </div>
     `).join('');
@@ -307,6 +313,11 @@ function displayDescriptions() {
             <div class="data-meta">
                 <span>ID: ${desc.id}</span>
                 <span>${desc.style}</span>
+            </div>
+            <div class="data-actions">
+                <button class="btn-delete" onclick="deleteDescription(${desc.id}, '${desc.serverName}')">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
             </div>
         </div>
     `).join('');
@@ -409,6 +420,11 @@ function displayGameServers(servers) {
                 <span>${server.gameType}</span>
                 <span>${server.style}</span>
             </div>
+            <div class="data-actions">
+                <button class="btn-delete" onclick="deleteGameServer(${server.id}, '${server.serverName}')">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
         </div>
     `).join('');
 }
@@ -459,9 +475,306 @@ function displayMessages() {
                 <span>${message.status}</span>
                 <span>${new Date(message.timestamp).toLocaleDateString()}</span>
             </div>
+            <div class="data-actions">
+                <button class="btn-delete" onclick="deleteMessage(${message.id}, '${message.subject}')">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
         </div>
     `).join('');
 }
+
+/**
+ * Delete user function
+ */
+async function deleteUser(userId, userName) {
+    // Check if this is the current admin trying to delete themselves
+    const currentAdmin = JSON.parse(localStorage.getItem('gameserverpro_admin') || '{}');
+    const isSelfDeletion = currentAdmin.id === userId && currentAdmin.isAdmin;
+    
+    if (isSelfDeletion) {
+        // Show password confirmation modal for admin self-deletion
+        showPasswordConfirmationModal(userId, userName, 'user');
+        return;
+    }
+    
+    if (!confirm(`Are you sure you want to delete user "${userName}"? This action cannot be undone.`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            showNotification(`User "${userName}" deleted successfully`, 'success');
+            loadUsers(); // Refresh the users list
+        } else {
+            const error = await response.json();
+            showNotification(`Error deleting user: ${error.message || 'Unknown error'}`, 'error');
+        }
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        showNotification('Error deleting user. Please try again.', 'error');
+    }
+}
+
+/**
+ * Delete description function
+ */
+async function deleteDescription(descriptionId, serverName) {
+    if (!confirm(`Are you sure you want to delete description for "${serverName}"? This action cannot be undone.`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/descriptions/${descriptionId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            showNotification(`Description for "${serverName}" deleted successfully`, 'success');
+            loadDescriptions(); // Refresh the descriptions list
+        } else {
+            const error = await response.json();
+            showNotification(`Error deleting description: ${error.message || 'Unknown error'}`, 'error');
+        }
+    } catch (error) {
+        console.error('Error deleting description:', error);
+        showNotification('Error deleting description. Please try again.', 'error');
+    }
+}
+
+/**
+ * Delete game server function
+ */
+async function deleteGameServer(serverId, serverName) {
+    if (!confirm(`Are you sure you want to delete game server "${serverName}"? This action cannot be undone.`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/servers/${serverId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            showNotification(`Game server "${serverName}" deleted successfully`, 'success');
+            loadGameServers(); // Refresh the servers list
+        } else {
+            const error = await response.json();
+            showNotification(`Error deleting game server: ${error.message || 'Unknown error'}`, 'error');
+        }
+    } catch (error) {
+        console.error('Error deleting game server:', error);
+        showNotification('Error deleting game server. Please try again.', 'error');
+    }
+}
+
+/**
+ * Delete message function
+ */
+async function deleteMessage(messageId, subject) {
+    if (!confirm(`Are you sure you want to delete message "${subject}"? This action cannot be undone.`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/contact/messages/${messageId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            showNotification(`Message "${subject}" deleted successfully`, 'success');
+            loadMessages(); // Refresh the messages list
+        } else {
+            const error = await response.json();
+            showNotification(`Error deleting message: ${error.message || 'Unknown error'}`, 'error');
+        }
+    } catch (error) {
+        console.error('Error deleting message:', error);
+        showNotification('Error deleting message. Please try again.', 'error');
+    }
+}
+
+/**
+ * Show notification function
+ */
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Show notification
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+    
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+/**
+ * Show password confirmation modal for admin self-deletion
+ */
+function showPasswordConfirmationModal(itemId, itemName, itemType) {
+    // Create modal if it doesn't exist
+    let modal = document.getElementById('passwordConfirmationModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'passwordConfirmationModal';
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-shield-alt"></i> Admin Authentication Required</h2>
+                    <span class="close" onclick="closePasswordConfirmationModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="auth-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>You are attempting to delete your own admin account. This action is irreversible and will remove all your admin privileges.</p>
+                    </div>
+                    <form id="passwordConfirmationForm">
+                        <div class="form-group">
+                            <label for="adminPasswordConfirm">Enter your admin password to confirm:</label>
+                            <input type="password" id="adminPasswordConfirm" name="password" required 
+                                   placeholder="Enter your admin password">
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="closePasswordConfirmationModal()">Cancel</button>
+                            <button type="submit" class="btn-danger">Confirm Deletion</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+    
+    // Store the deletion context
+    modal.dataset.itemId = itemId;
+    modal.dataset.itemName = itemName;
+    modal.dataset.itemType = itemType;
+    
+    // Show modal
+    modal.classList.add('active');
+    
+    // Focus on password input
+    setTimeout(() => {
+        document.getElementById('adminPasswordConfirm').focus();
+    }, 100);
+    
+    // Handle form submission
+    const form = document.getElementById('passwordConfirmationForm');
+    form.onsubmit = handlePasswordConfirmation;
+}
+
+/**
+ * Handle password confirmation form submission
+ */
+async function handlePasswordConfirmation(e) {
+    e.preventDefault();
+    
+    const modal = document.getElementById('passwordConfirmationModal');
+    const password = document.getElementById('adminPasswordConfirm').value;
+    const itemId = modal.dataset.itemId;
+    const itemName = modal.dataset.itemName;
+    const itemType = modal.dataset.itemType;
+    
+    if (!password) {
+        showNotification('Please enter your admin password', 'error');
+        return;
+    }
+    
+    try {
+        // Verify admin password
+        const response = await fetch(`${API_BASE_URL}/api/users/verify-admin-password`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password })
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            if (result.valid) {
+                // Password is correct, proceed with deletion
+                await performAdminSelfDeletion(itemId, itemName, itemType);
+                closePasswordConfirmationModal();
+            } else {
+                showNotification('Invalid admin password. Please try again.', 'error');
+            }
+        } else {
+            showNotification('Password verification failed. Please try again.', 'error');
+        }
+    } catch (error) {
+        console.error('Password verification error:', error);
+        showNotification('Password verification failed. Please try again.', 'error');
+    }
+}
+
+/**
+ * Perform admin self-deletion after password verification
+ */
+async function performAdminSelfDeletion(itemId, itemName, itemType) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/users/${itemId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            showNotification(`Admin account "${itemName}" deleted successfully`, 'success');
+            
+            // Clear admin session and redirect to login
+            localStorage.removeItem('gameserverpro_admin');
+            localStorage.removeItem('gameserverpro_admin_token');
+            
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 2000);
+        } else {
+            const error = await response.json();
+            showNotification(`Error deleting admin account: ${error.message || 'Unknown error'}`, 'error');
+        }
+    } catch (error) {
+        console.error('Error deleting admin account:', error);
+        showNotification('Error deleting admin account. Please try again.', 'error');
+    }
+}
+
+/**
+ * Close password confirmation modal
+ */
+function closePasswordConfirmationModal() {
+    const modal = document.getElementById('passwordConfirmationModal');
+    if (modal) {
+        modal.classList.remove('active');
+        // Clear form
+        document.getElementById('passwordConfirmationForm').reset();
+    }
+}
+
+// Export functions for global access
+window.deleteUser = deleteUser;
+window.deleteDescription = deleteDescription;
+window.deleteGameServer = deleteGameServer;
+window.deleteMessage = deleteMessage;
+window.closePasswordConfirmationModal = closePasswordConfirmationModal;
 
 /**
  * Initialize dashboard when DOM is loaded

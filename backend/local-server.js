@@ -461,6 +461,101 @@ Begin your adventure at ${serverName} - where stories come to life!`
     }, 2000);
 });
 
+app.post('/api/users/verify-admin-password', (req, res) => {
+    const { password } = req.body;
+    
+    if (!password) {
+        return res.status(400).json({ success: false, message: 'Password is required' });
+    }
+    
+    // Find admin user (assuming admin123@redtech.com with password 123456)
+    const adminUser = mockUsers.find(user => user.isAdmin);
+    
+    if (!adminUser) {
+        return res.status(404).json({ success: false, message: 'Admin user not found' });
+    }
+    
+    // In a real application, you would hash and compare passwords properly
+    // For this demo, we're using the hardcoded admin password
+    const isValidPassword = password === '123456';
+    
+    res.json({ 
+        success: true, 
+        valid: isValidPassword,
+        message: isValidPassword ? 'Password verified' : 'Invalid password'
+    });
+});
+
+// DELETE API Endpoints for Admin
+app.delete('/api/users/:id', (req, res) => {
+    const userId = parseInt(req.params.id);
+    
+    // Find user index
+    const userIndex = mockUsers.findIndex(user => user.id === userId);
+    
+    if (userIndex === -1) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    
+    // Check if trying to delete admin user
+    if (mockUsers[userIndex].isAdmin) {
+        return res.status(403).json({ success: false, message: 'Cannot delete admin user' });
+    }
+    
+    // Remove user
+    mockUsers.splice(userIndex, 1);
+    
+    res.json({ success: true, message: 'User deleted successfully' });
+});
+
+app.delete('/api/descriptions/:id', (req, res) => {
+    const descriptionId = parseInt(req.params.id);
+    
+    // Find description index
+    const descIndex = mockDescriptions.findIndex(desc => desc.id === descriptionId);
+    
+    if (descIndex === -1) {
+        return res.status(404).json({ success: false, message: 'Description not found' });
+    }
+    
+    // Remove description
+    mockDescriptions.splice(descIndex, 1);
+    
+    res.json({ success: true, message: 'Description deleted successfully' });
+});
+
+app.delete('/api/servers/:id', (req, res) => {
+    const serverId = parseInt(req.params.id);
+    
+    // Find server index (servers are the same as descriptions in this mock)
+    const serverIndex = mockDescriptions.findIndex(server => server.id === serverId);
+    
+    if (serverIndex === -1) {
+        return res.status(404).json({ success: false, message: 'Game server not found' });
+    }
+    
+    // Remove server
+    mockDescriptions.splice(serverIndex, 1);
+    
+    res.json({ success: true, message: 'Game server deleted successfully' });
+});
+
+app.delete('/api/contact/messages/:id', (req, res) => {
+    const messageId = parseInt(req.params.id);
+    
+    // Find message index
+    const messageIndex = mockMessages.findIndex(msg => msg.id === messageId);
+    
+    if (messageIndex === -1) {
+        return res.status(404).json({ success: false, message: 'Message not found' });
+    }
+    
+    // Remove message
+    mockMessages.splice(messageIndex, 1);
+    
+    res.json({ success: true, message: 'Message deleted successfully' });
+});
+
 // Static file serving (must come after API routes)
 app.use(express.static(path.join(__dirname, '../')));
 
@@ -475,19 +570,31 @@ app.use('/html', express.static(path.join(__dirname, '../html')));
 
 // Serve the frontend
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../html/index.html'));
+    res.sendFile(path.join(__dirname, '../html/03-index.html'));
 });
 
 app.get('/wallet', (req, res) => {
-    res.sendFile(path.join(__dirname, '../html/wallet.html'));
+    res.sendFile(path.join(__dirname, '../html/04-wallet.html'));
 });
 
 app.get('/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, '../html/dashboard.html'));
+    res.sendFile(path.join(__dirname, '../html/02-dashboard.html'));
 });
 
 app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, '../html/admin.html'));
+    res.sendFile(path.join(__dirname, '../html/01-admin.html'));
+});
+
+app.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, '../html/06-about.html'));
+});
+
+app.get('/contact', (req, res) => {
+    res.sendFile(path.join(__dirname, '../html/07-contact.html'));
+});
+
+app.get('/services', (req, res) => {
+    res.sendFile(path.join(__dirname, '../html/05-services.html'));
 });
 
 // Start server

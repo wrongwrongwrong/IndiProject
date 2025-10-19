@@ -185,20 +185,15 @@ function checkAuth() {
     
     if (!user || !token) {
         console.log('User not authenticated, redirecting to login');
-        window.location.href = 'index.html';
+        window.location.href = '03-index.html';
         return false;
     }
     
-    // Update user name in UI
-    try {
-        const userData = JSON.parse(user);
-        const userNameElement = document.querySelector('.user-name');
-        if (userNameElement) {
-            userNameElement.textContent = `Welcome, ${userData.name}`;
-        }
-    } catch (error) {
-        console.error('Error parsing user data:', error);
-    }
+    // Update user name in UI - removed since welcome message moved to dashboard hero
+    // const userNameElement = document.querySelector('.user-name');
+    // if (userNameElement) {
+    //     userNameElement.textContent = `Welcome, ${userData.name}`;
+    // }
     
     return true;
 }
@@ -820,8 +815,8 @@ function openAddFundsModal() {
     const modal = document.getElementById('addFundsModal');
     console.log('Modal element:', modal);
     if (modal) {
-        modal.style.display = 'block';
-        console.log('Modal display set to block');
+        modal.classList.add('active');
+        console.log('Modal active class added');
         
         // Update payment method dropdown
         updatePaymentMethodDropdown();
@@ -835,56 +830,59 @@ function openAddFundsModal() {
 }
 
 function closeAddFundsModal() {
-    document.getElementById('addFundsModal').style.display = 'none';
+    const modal = document.getElementById('addFundsModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
 }
 
 function openAddPaymentMethodModal() {
     // Clear any existing errors
     clearModalErrors('addPaymentMethodModal');
     
-    document.getElementById('addPaymentMethodModal').style.display = 'block';
+    document.getElementById('addPaymentMethodModal').classList.add('active');
 }
 
 function closeAddPaymentMethodModal() {
-    document.getElementById('addPaymentMethodModal').style.display = 'none';
+    document.getElementById('addPaymentMethodModal').classList.remove('active');
 }
 
 function openTransferModal() {
     // Clear any existing errors
     clearModalErrors('transferModal');
     
-    document.getElementById('transferModal').style.display = 'block';
+    document.getElementById('transferModal').classList.add('active');
 }
 
 function closeTransferModal() {
-    document.getElementById('transferModal').style.display = 'none';
+    document.getElementById('transferModal').classList.remove('active');
 }
 
 function openAddFriendModal() {
     // Clear any existing errors
     clearModalErrors('addFriendModal');
     
-    document.getElementById('addFriendModal').style.display = 'block';
+    document.getElementById('addFriendModal').classList.add('active');
 }
 
 function closeAddFriendModal() {
-    document.getElementById('addFriendModal').style.display = 'none';
+    document.getElementById('addFriendModal').classList.remove('active');
 }
 
 function openAddFriendModal() {
-    document.getElementById('addFriendModal').style.display = 'block';
+    document.getElementById('addFriendModal').classList.add('active');
 }
 
 function closeAddFriendModal() {
-    document.getElementById('addFriendModal').style.display = 'none';
+    document.getElementById('addFriendModal').classList.remove('active');
 }
 
 function openAddPaymentMethodModal() {
-    document.getElementById('addPaymentMethodModal').style.display = 'block';
+    document.getElementById('addPaymentMethodModal').classList.add('active');
 }
 
 function closeAddPaymentMethodModal() {
-    document.getElementById('addPaymentMethodModal').style.display = 'none';
+    document.getElementById('addPaymentMethodModal').classList.remove('active');
 }
 
 // Utility functions
@@ -1100,7 +1098,7 @@ window.addEventListener('click', function(event) {
     modals.forEach(modalId => {
         const modal = document.getElementById(modalId);
         if (event.target === modal) {
-            modal.style.display = 'none';
+            modal.classList.remove('active');
         }
     });
 });
@@ -1111,8 +1109,8 @@ document.addEventListener('keydown', function(event) {
         const modals = ['addFundsModal', 'transferModal', 'addFriendModal', 'addPaymentMethodModal'];
         modals.forEach(modalId => {
             const modal = document.getElementById(modalId);
-            if (modal.style.display === 'block') {
-                modal.style.display = 'none';
+            if (modal.classList.contains('active')) {
+                modal.classList.remove('active');
             }
         });
     }

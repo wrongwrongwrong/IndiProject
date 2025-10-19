@@ -11,11 +11,58 @@ let dashboardData = {
 // Initialize dashboard
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Dashboard page loaded');
-    checkAuth();
-    loadDashboardData();
-    initializeDashboardCharts();
-    updateDashboardUI();
+    initializeDashboard();
 });
+
+// Initialize dashboard with auth check
+function initializeDashboard() {
+    // Check authentication status
+    const isAuthenticated = checkAuth();
+    
+    if (isAuthenticated) {
+        // User is authenticated - show authenticated hero and load dashboard
+        showAuthenticatedHero();
+        loadDashboardData();
+        initializeDashboardCharts();
+        updateDashboardUI();
+    } else {
+        // User is not authenticated - show unauthenticated hero
+        showUnauthenticatedHero();
+    }
+    
+    // Set up AuthManager integration for dynamic updates
+    setupAuthManagerIntegration();
+}
+
+// Set up AuthManager integration for dynamic authentication state changes
+function setupAuthManagerIntegration() {
+    // Listen for authentication state changes
+    window.addEventListener('authStateChanged', function(event) {
+        console.log('Auth state changed:', event.detail);
+        handleAuthStateChange(event.detail.isAuthenticated);
+    });
+    
+    // Also listen for storage events (cross-tab synchronization)
+    window.addEventListener('storage', function(event) {
+        if (event.key === 'gameserverpro_user' || event.key === 'gameserverpro_token') {
+            console.log('Auth storage changed, updating UI');
+            const isAuthenticated = checkAuth();
+            handleAuthStateChange(isAuthenticated);
+        }
+    });
+}
+
+// Handle authentication state changes
+function handleAuthStateChange(isAuthenticated) {
+    if (isAuthenticated) {
+        showAuthenticatedHero();
+        loadDashboardData();
+        initializeDashboardCharts();
+        updateDashboardUI();
+    } else {
+        showUnauthenticatedHero();
+    }
+}
 
 // Check authentication
 function checkAuth() {
@@ -25,23 +72,49 @@ function checkAuth() {
     console.log('Auth check:', { user: !!user, token: !!token });
     
     if (!user || !token) {
-        console.log('User not authenticated, redirecting to login');
-        window.location.href = 'index.html';
+        console.log('User not authenticated');
         return false;
     }
     
-    // Update user name in UI
-    try {
-        const userData = JSON.parse(user);
-        const userNameElement = document.querySelector('.user-name');
-        if (userNameElement) {
-            userNameElement.textContent = `Welcome, ${userData.name}`;
-        }
-    } catch (error) {
-        console.error('Error parsing user data:', error);
-    }
+    // Update user name in UI - removed since welcome message moved to dashboard hero
+    // const userNameElement = document.querySelector('.user-name');
+    // if (userNameElement) {
+    //     userNameElement.textContent = `Welcome, ${userData.name}`;
+    // }
     
     return true;
+}
+
+// Show authenticated hero section
+function showAuthenticatedHero() {
+    const unauthenticatedHero = document.getElementById('hero-unauthenticated');
+    const authenticatedHero = document.getElementById('hero-authenticated');
+    
+    if (unauthenticatedHero) unauthenticatedHero.style.display = 'none';
+    if (authenticatedHero) authenticatedHero.style.display = 'block';
+    
+    // Update welcome message with user name
+    const user = localStorage.getItem('gameserverpro_user');
+    if (user) {
+        try {
+            const userData = JSON.parse(user);
+            const welcomeNameElement = document.getElementById('welcome-user-name');
+            if (welcomeNameElement) {
+                welcomeNameElement.textContent = userData.name || 'User';
+            }
+        } catch (error) {
+            console.error('Error parsing user data:', error);
+        }
+    }
+}
+
+// Show unauthenticated hero section
+function showUnauthenticatedHero() {
+    const unauthenticatedHero = document.getElementById('hero-unauthenticated');
+    const authenticatedHero = document.getElementById('hero-authenticated');
+    
+    if (unauthenticatedHero) unauthenticatedHero.style.display = 'block';
+    if (authenticatedHero) authenticatedHero.style.display = 'none';
 }
 
 // Load dashboard data from localStorage
@@ -356,7 +429,7 @@ function initializeDashboardCharts() {
 // Open description generator
 function openDescriptionGenerator() {
     // Redirect to main page with description modal
-    window.location.href = 'index.html#description';
+    window.location.href = '03-index.html#description';
 }
 
 // View description
@@ -399,7 +472,7 @@ function editDescription(index) {
     if (description) {
         // Redirect to main page with pre-filled form
         localStorage.setItem('gameserverpro_edit_description', JSON.stringify({index, description}));
-        window.location.href = 'index.html#description';
+        window.location.href = '03-index.html#description';
     }
 }
 
@@ -407,7 +480,7 @@ function editDescription(index) {
 function showDescriptionModal(description) {
     const modal = document.createElement('div');
     modal.className = 'modal';
-    modal.style.display = 'block';
+    modal.classList.add('active');
     modal.innerHTML = `
         <div class="modal-content">
             <div class="modal-header">
@@ -448,7 +521,7 @@ function logout() {
     localStorage.removeItem('gameserverpro_token');
     localStorage.removeItem('gameserverpro_descriptions');
     localStorage.removeItem('gameserverpro_dashboard');
-    window.location.href = 'index.html';
+    window.location.href = '03-index.html';
 }
 
 // Message function (if not defined in script.js)
@@ -485,7 +558,7 @@ function showMessage(message, type = 'success') {
 function checkAuth() {
     const user = localStorage.getItem('gameserverpro_user');
     if (!user) {
-        window.location.href = 'index.html';
+        window.location.href = '03-index.html';
         return false;
     }
     return true;

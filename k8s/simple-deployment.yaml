@@ -1,0 +1,129 @@
+# Simplified Kubernetes Configuration for GameServer Pro
+# This configuration deploys the application as a single service
+
+# Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gameserver-pro
+  labels:
+    name: gameserver-pro
+---
+# ConfigMap for application configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gameserver-pro-config
+  namespace: gameserver-pro
+data:
+  NODE_ENV: "production"
+  PORT: "3000"
+---
+# Secret for sensitive data
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gameserver-pro-secrets
+  namespace: gameserver-pro
+type: Opaque
+data:
+  JWT_SECRET: Z3JxU2NiTk1EWlduMmVsUWlvWUJwdGtpcS9LTUNHMHdwOG94Vk1sQ01GYWxyc1NnOGhMNmtlbHI1UlZKMDYxegp4QTN1dmYwVWlnN2RKOWUydVR5SWxRPT0=
+---
+# Main Application Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gameserver-pro-deployment
+  namespace: gameserver-pro
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gameserver-pro
+  template:
+    metadata:
+      labels:
+        app: gameserver-pro
+    spec:
+      containers:
+      - name: gameserver-pro
+        image: gameserver-pro:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: gameserver-pro-config
+              key: NODE_ENV
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: gameserver-pro-config
+              key: PORT
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: gameserver-pro-secrets
+              key: JWT_SECRET
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        volumeMounts:
+        - name: data-volume
+          mountPath: /app/data
+      volumes:
+      - name: data-volume
+        emptyDir: {}
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: gameserver-pro-service
+  namespace: gameserver-pro
+spec:
+  selector:
+    app: gameserver-pro
+  ports:
+  - port: 80
+    targetPort: 3000
+  type: LoadBalancer
+---
+# Ingress (optional - for custom domain)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gameserver-pro-ingress
+  namespace: gameserver-pro
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - host: gameserverpro.local  # Replace with your domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: gameserver-pro-service
+            port:
+              number: 80

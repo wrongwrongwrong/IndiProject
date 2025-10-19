@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - GameServer Pro</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/component.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -12,21 +14,24 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo">
+            <a href="03-index.html" class="nav-logo">
                 <i class="fas fa-gamepad"></i>
                 <span>GameServer Pro</span>
-            </div>
+            </a>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="03-index.html" class="nav-link">Home</a></li>
                 <li><a href="index.html#services" class="nav-link">Services</a></li>
                 <li><a href="index.html#pricing" class="nav-link">Pricing</a></li>
                 <li><a href="index.html#about" class="nav-link">About</a></li>
                 <li><a href="index.html#contact" class="nav-link">Contact</a></li>
-                <li><a href="wallet.html" class="nav-link"><i class="fas fa-wallet"></i> My Wallet</a></li>
+                <li><a href="04-wallet.html" class="nav-link"><i class="fas fa-wallet"></i> My Wallet</a></li>
             </ul>
             <div class="nav-auth">
-                <div class="user-menu">
-                    <span class="user-name">Welcome, User</span>
+                <div class="auth-buttons">
+                    <button class="btn-login" onclick="openLogin()" data-lang="login">Login</button>
+                    <button class="btn-signup" onclick="openSignup()" data-lang="signup">Sign Up</button>
+                </div>
+                <div class="user-menu" style="display: none;">
                     <button class="btn-logout" onclick="logout()">Logout</button>
                 </div>
             </div>
@@ -59,12 +64,124 @@
         </div>
     </nav>
 
-    <!-- Dashboard Header -->
-    <section class="dashboard-header">
+    <!-- Dashboard Hero - Unauthenticated -->
+    <section class="hero hero-banner dashboard-hero" id="hero-unauthenticated">
         <div class="container">
-            <div class="dashboard-header-content">
-                <h1>Dashboard</h1>
-                <p>Manage your server descriptions and track your performance</p>
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Welcome to GameServer Pro</h1>
+                    <p class="hero-subtitle">Create professional gaming server descriptions and manage your community</p>
+                    <div class="hero-features">
+                        <div class="feature-badge">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Real-time Analytics</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Description Management</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="fas fa-share-alt"></i>
+                            <span>Social Sharing</span>
+                        </div>
+                    </div>
+                    <div class="hero-actions">
+                        <button class="btn-primary btn-large" onclick="openLogin()">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </button>
+                        <button class="btn-secondary btn-medium" onclick="openSignup()">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="cards-preview">
+                        <div class="preview-card">
+                            <div class="card-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4>Performance Metrics</h4>
+                            <p>Track growth</p>
+                        </div>
+                        <div class="preview-card">
+                            <div class="card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h4>Player Engagement</h4>
+                            <p>Community insights</p>
+                        </div>
+                        <div class="preview-card">
+                            <div class="card-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <h4>Achievements</h4>
+                            <p>Your milestones</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Hero - Authenticated -->
+    <section class="hero hero-banner dashboard-hero" id="hero-authenticated" style="display: none;">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Welcome back, <span id="welcome-user-name">User</span>!</h1>
+                    <p class="hero-subtitle">Manage your server descriptions and track your performance</p>
+                    <div class="hero-features">
+                        <div class="feature-badge">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Real-time Analytics</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Description Management</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="fas fa-share-alt"></i>
+                            <span>Social Sharing</span>
+                        </div>
+                    </div>
+                    <div class="hero-actions">
+                        <button class="btn-primary" onclick="scrollToSection('dashboard-content')">
+                            <i class="fas fa-tachometer-alt"></i>
+                            View Dashboard
+                        </button>
+                        <button class="btn-secondary" onclick="openDescriptionGenerator()">
+                            <i class="fas fa-plus"></i>
+                            Create Description
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="cards-preview">
+                        <div class="preview-card">
+                            <div class="card-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4>Performance Metrics</h4>
+                            <p>Track growth</p>
+                        </div>
+                        <div class="preview-card">
+                            <div class="card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h4>Player Engagement</h4>
+                            <p>Community insights</p>
+                        </div>
+                        <div class="preview-card">
+                            <div class="card-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <h4>Achievements</h4>
+                            <p>Your milestones</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -222,9 +339,9 @@
                     <h4>Services</h4>
                     <ul>
                         <li><a href="index.html#services">Custom Descriptions</a></li>
-                        <li><a href="wallet.html">Digital Wallet</a></li>
+                        <li><a href="04-wallet.html">Digital Wallet</a></li>
                         <li><a href="index.html#services">Social Sharing</a></li>
-                        <li><a href="dashboard.html">Analytics</a></li>
+                        <li><a href="02-dashboard.html">Analytics</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -253,6 +370,60 @@
         </div>
     </footer>
 
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login</h2>
+                <span class="close" onclick="closeLoginModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sign Up</h2>
+                <span class="close" onclick="closeSignupModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" name="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Admin Login Modal -->
     <div id="adminLoginModal" class="modal">
         <div class="modal-content">
@@ -278,6 +449,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/auth-manager.js"></script>
     <script src="../js/script.js"></script>
     <script src="../js/dashboard.js"></script>
 </body>
