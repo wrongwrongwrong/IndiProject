@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - GameServer Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-gamepad"></i>
+                <span>GameServer Pro</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="about.html" class="nav-link active">About</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-auth">
+                <div class="user-menu">
+                    <span class="user-name">Welcome, User</span>
+                    <button class="btn-logout" onclick="logout()">Logout</button>
+                </div>
+            </div>
+            <div class="language-switcher">
+                <button class="lang-btn" onclick="toggleLanguageDropdown()">
+                    <i class="fas fa-globe"></i>
+                    <span id="currentLang">EN</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" onclick="switchLanguage('en')">
+                        <span class="lang-flag">🇺🇸</span>
+                        <span class="lang-name">English</span>
+                    </div>
+                    <div class="lang-option" onclick="switchLanguage('zh')">
+                        <span class="lang-flag">🇨🇳</span>
+                        <span class="lang-name">中文</span>
+                    </div>
+                    <div class="lang-option" onclick="switchLanguage('ch')">
+                        <span class="lang-flag">██</span>
+                        <span class="lang-name">Classified</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Hero -->
+    <section class="hero about-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 data-lang="aboutHeroTitle">About GameServer Pro</h1>
+                <p data-lang="aboutHeroSubtitle">Empowering gaming communities with professional server solutions</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Our Mission</h2>
+                    <p>At GameServer Pro, we believe that every gaming server deserves professional-quality descriptions and tools to help them grow and thrive. Our mission is to democratize access to high-quality server management tools that were previously only available to large gaming companies.</p>
+                    
+                    <h3>What We Do</h3>
+                    <p>We provide comprehensive solutions for gaming server owners, from custom description generation to analytics and social sharing tools. Our platform leverages cutting-edge cloud computing technology to deliver fast, reliable, and scalable services.</p>
+                    
+                    <h3>Our Technology</h3>
+                    <p>Built on modern cloud infrastructure using Kubernetes, PostgreSQL, and microservices architecture, our platform ensures high availability, security, and performance. We use AI-powered content generation to create engaging server descriptions that attract players.</p>
+                </div>
+                
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">10K+</div>
+                        <div class="stat-label">Servers Served</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">Descriptions Created</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Support</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Team</h2>
+                <p>Meet the experts behind GameServer Pro</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Alex Chen</h3>
+                    <p class="member-role">CEO & Founder</p>
+                    <p class="member-bio">Gaming industry veteran with 10+ years of experience in server management and community building.</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Sarah Johnson</h3>
+                    <p class="member-role">CTO</p>
+                    <p class="member-bio">Cloud computing expert specializing in scalable architectures and AI-powered solutions.</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Mike Rodriguez</h3>
+                    <p class="member-role">Head of Product</p>
+                    <p class="member-bio">Product strategist focused on user experience and feature development for gaming communities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Values</h2>
+                <p>The principles that guide everything we do</p>
+            </div>
+            
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community First</h3>
+                    <p>We prioritize the needs of gaming communities and work to create tools that genuinely help them grow.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Security & Privacy</h3>
+                    <p>We implement enterprise-grade security measures to protect our users' data and transactions.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Innovation</h3>
+                    <p>We continuously innovate to provide cutting-edge solutions using the latest technology.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Reliability</h3>
+                    <p>We maintain 99.9% uptime and provide reliable, consistent service to our users.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-gamepad"></i>
+                        <span>GameServer Pro</span>
+                    </div>
+                    <p>Professional gaming server descriptions powered by cloud computing.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html">Custom Descriptions</a></li>
+                        <li><a href="wallet.html">Digital Wallet</a></li>
+                        <li><a href="services.html">Social Sharing</a></li>
+                        <li><a href="dashboard.html">Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="contact.html">Documentation</a></li>
+                        <li><a href="contact.html">API Reference</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Privacy Policy</a></li>
+                        <li><a href="contact.html">Terms of Service</a></li>
+                        <li><a href="contact.html">Careers</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 GameServer Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

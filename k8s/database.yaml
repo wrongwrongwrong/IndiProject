@@ -1,0 +1,155 @@
+# Kubernetes Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gameserver-pro
+  labels:
+    name: gameserver-pro
+---
+# ConfigMap for application configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gameserver-pro-config
+  namespace: gameserver-pro
+data:
+  DATABASE_URL: "postgresql://gameserver_user:${POSTGRES_PASSWORD}@postgres-service:5432/gameserver_db"
+  REDIS_URL: "redis://redis-service:6379"
+  JWT_SECRET: "${JWT_SECRET}"
+  ENCRYPTION_KEY: "${ENCRYPTION_KEY}"
+  PAYMENT_GATEWAY_URL: "${PAYMENT_GATEWAY_URL}"
+  PAYMENT_GATEWAY_KEY: "${PAYMENT_GATEWAY_KEY}"
+---
+# Secret for sensitive data
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gameserver-pro-secrets
+  namespace: gameserver-pro
+type: Opaque
+data:
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_B64}
+  JWT_SECRET: ${JWT_SECRET_B64}
+  ENCRYPTION_KEY: ${ENCRYPTION_KEY_B64}
+  PAYMENT_GATEWAY_KEY: ${PAYMENT_GATEWAY_KEY_B64}
+---
+# PostgreSQL Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+  namespace: gameserver-pro
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "gameserver_db"
+        - name: POSTGRES_USER
+          value: "gameserver_user"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: gameserver-pro-secrets
+              key: POSTGRES_PASSWORD
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        - name: postgres-init
+          mountPath: /docker-entrypoint-initdb.d
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+      - name: postgres-init
+        configMap:
+          name: postgres-init-script
+---
+# PostgreSQL Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: gameserver-pro
+spec:
+  selector:
+    app: postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+  type: ClusterIP
+---
+# PostgreSQL Persistent Volume Claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: gameserver-pro
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+# Redis Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  namespace: gameserver-pro
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+---
+# Redis Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: gameserver-pro
+spec:
+  selector:
+    app: redis
+  ports:
+  - port: 6379
+    targetPort: 6379
+  type: ClusterIP

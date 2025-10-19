@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test - GameServer Pro</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .success { color: green; }
+        .error { color: red; }
+        button { padding: 10px 20px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>GameServer Pro Debug Test</h1>
+    
+    <div class="test-section">
+        <h2>1. Authentication Test</h2>
+        <button onclick="testAuth()">Test Auth</button>
+        <div id="auth-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. API Connection Test</h2>
+        <button onclick="testAPI()">Test API</button>
+        <div id="api-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Description Generation Test</h2>
+        <button onclick="testDescription()">Test Description</button>
+        <div id="desc-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Wallet Test</h2>
+        <button onclick="testWallet()">Test Wallet</button>
+        <div id="wallet-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>5. Dashboard Test</h2>
+        <button onclick="testDashboard()">Test Dashboard</button>
+        <div id="dashboard-result"></div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE_URL = window.location.port === '5500' ? 'http://localhost:3000' : '';
+        
+        // Helper function to make API calls
+        async function apiCall(endpoint, options = {}) {
+            const url = `${API_BASE_URL}${endpoint}`;
+            return fetch(url, {
+                ...options,
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...options.headers
+                }
+            });
+        }
+        
+        function showResult(elementId, message, isSuccess = true) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="${isSuccess ? 'success' : 'error'}">${message}</div>`;
+        }
+        
+        function testAuth() {
+            const user = localStorage.getItem('gameserverpro_user');
+            const token = localStorage.getItem('gameserverpro_token');
+            
+            if (user && token) {
+                try {
+                    const userData = JSON.parse(user);
+                    showResult('auth-result', `✅ Authenticated as: ${userData.name}`, true);
+                } catch (error) {
+                    showResult('auth-result', `❌ Auth data corrupted: ${error.message}`, false);
+                }
+            } else {
+                showResult('auth-result', '❌ Not authenticated. Please login first.', false);
+            }
+        }
+        
+        async function testAPI() {
+            try {
+                const response = await apiCall('/health');
+                const data = await response.json();
+                showResult('api-result', `✅ API working: ${data.status}`, true);
+            } catch (error) {
+                showResult('api-result', `❌ API error: ${error.message}`, false);
+            }
+        }
+        
+        async function testDescription() {
+            try {
+                const response = await apiCall('/api/descriptions/generate', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        serverName: 'Test Server',
+                        gameType: 'minecraft',
+                        descriptionStyle: 'casual'
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showResult('desc-result', `✅ Description generated successfully!`, true);
+                } else {
+                    showResult('desc-result', `❌ Description failed: ${data.error}`, false);
+                }
+            } catch (error) {
+                showResult('desc-result', `❌ Description error: ${error.message}`, false);
+            }
+        }
+        
+        async function testWallet() {
+            try {
+                const response = await apiCall('/api/wallet/balance');
+                const data = await response.json();
+                showResult('wallet-result', `✅ Wallet API working: Balance $${data.balance}`, true);
+            } catch (error) {
+                showResult('wallet-result', `❌ Wallet error: ${error.message}`, false);
+            }
+        }
+        
+        function testDashboard() {
+            const descriptions = localStorage.getItem('gameserverpro_descriptions');
+            const dashboard = localStorage.getItem('gameserverpro_dashboard');
+            
+            if (descriptions) {
+                const descData = JSON.parse(descriptions);
+                showResult('dashboard-result', `✅ Dashboard data: ${descData.length} descriptions saved`, true);
+            } else {
+                showResult('dashboard-result', '⚠️ No dashboard data yet. Create a description first.', false);
+            }
+        }
+        
+        // Auto-run tests on load
+        window.addEventListener('load', function() {
+            console.log('Debug page loaded');
+            console.log('API_BASE_URL:', API_BASE_URL);
+            console.log('Current URL:', window.location.href);
+        });
+    </script>
+</body>
+</html>

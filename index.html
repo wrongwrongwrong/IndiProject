@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameServer Pro - Custom Gaming Server Descriptions</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-gamepad"></i>
+                <span>GameServer Pro</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active" data-lang="home">Home</a></li>
+                <li><a href="services.html" class="nav-link" data-lang="services">Services</a></li>
+                <li><a href="about.html" class="nav-link" data-lang="about">About</a></li>
+                <li><a href="contact.html" class="nav-link" data-lang="contact">Contact</a></li>
+            </ul>
+            <div class="nav-auth">
+                <button class="btn-login" onclick="openLoginModal()" data-lang="login">Login</button>
+                <button class="btn-signup" onclick="openSignupModal()" data-lang="signup">Sign Up</button>
+            </div>
+            <div class="language-switcher">
+                <button class="lang-btn" onclick="toggleLanguageDropdown()">
+                    <i class="fas fa-globe"></i>
+                    <span id="currentLang">EN</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" onclick="switchLanguage('en')">
+                        <span class="lang-flag">🇺🇸</span>
+                        <span class="lang-name">English</span>
+                    </div>
+                    <div class="lang-option" onclick="switchLanguage('zh')">
+                        <span class="lang-flag">🇨🇳</span>
+                        <span class="lang-name">中文</span>
+                    </div>
+                    <div class="lang-option" onclick="switchLanguage('ch')">
+                        <span class="lang-flag">██</span>
+                        <span class="lang-name">Classified</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title" data-lang="heroTitle">Professional Gaming Server Descriptions</h1>
+                <p class="hero-subtitle" data-lang="heroSubtitle">Transform your gaming server with custom, professional descriptions that attract players and build thriving communities.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="window.location.href='services.html'" data-lang="getStarted">Get Started</button>
+                    <button class="btn-secondary" onclick="window.location.href='about.html'" data-lang="learnMore">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-graphic">
+                    <i class="fas fa-server"></i>
+                    <div class="floating-elements">
+                        <div class="floating-icon"><i class="fas fa-users"></i></div>
+                        <div class="floating-icon"><i class="fas fa-crown"></i></div>
+                        <div class="floating-icon"><i class="fas fa-rocket"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Overview -->
+    <section id="services" class="services-overview">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-lang="whatWeOffer">What We Offer</h2>
+                <p data-lang="everythingYouNeed">Everything you need to grow your gaming server</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h3 data-lang="customDescriptions">Custom Descriptions</h3>
+                    <p data-lang="customDescriptionsDesc">AI-powered descriptions that attract players and showcase your server's unique features.</p>
+                    <button class="btn-service" onclick="openDescriptionGenerator()" data-lang="tryNow">Try Now</button>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3 data-lang="digitalWallet">Digital Wallet</h3>
+                    <p data-lang="digitalWalletDesc">Secure payment processing and peer-to-peer transfers for the gaming community.</p>
+                    <button class="btn-service" onclick="openWallet()" data-lang="manageWallet">Manage Wallet</button>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <h3 data-lang="socialSharing">Social Sharing</h3>
+                    <p data-lang="socialSharingDesc">Share your server descriptions and grow your community through social networks.</p>
+                    <button class="btn-service" onclick="openSharing()" data-lang="shareServer">Share Server</button>
+                </div>
+            </div>
+            <div class="services-cta">
+                <a href="services.html" class="btn-primary" data-lang="viewAllServices">View All Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose GameServer Pro?</h2>
+                <p>Built for gaming communities, by gaming communities</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3>Cloud-Powered</h3>
+                    <p>Built on enterprise-grade cloud infrastructure for reliability and scalability.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure & Safe</h3>
+                    <p>Bank-level security with encrypted transactions and protected user data.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Fast</h3>
+                    <p>Optimized for speed with instant description generation and real-time updates.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock support from our dedicated gaming community experts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Transform Your Server?</h2>
+                <p>Join thousands of gaming communities already using GameServer Pro</p>
+                <div class="cta-buttons">
+                    <button class="btn-primary" onclick="openSignupModal()">Start Free Trial</button>
+                    <a href="contact.html" class="btn-secondary">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-gamepad"></i>
+                        <span>GameServer Pro</span>
+                    </div>
+                    <p>Professional gaming server descriptions powered by cloud computing.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html">Custom Descriptions</a></li>
+                        <li><a href="wallet.html">Digital Wallet</a></li>
+                        <li><a href="services.html">Social Sharing</a></li>
+                        <li><a href="dashboard.html">Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="contact.html">Documentation</a></li>
+                        <li><a href="contact.html">API Reference</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Privacy Policy</a></li>
+                        <li><a href="contact.html">Terms of Service</a></li>
+                        <li><a href="contact.html">Careers</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 GameServer Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login</h2>
+                <span class="close" onclick="closeLoginModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sign Up</h2>
+                <span class="close" onclick="closeSignupModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" name="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Description Modal -->
+    <div id="descriptionModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>Create Custom Server Description</h2>
+                <span class="close" onclick="closeDescriptionModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="descriptionForm">
+                    <div class="form-group">
+                        <label for="serverName">Server Name</label>
+                        <input type="text" id="serverName" name="serverName" placeholder="Enter your server name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gameType">Game Type</label>
+                        <select id="gameType" name="gameType" required>
+                            <option value="">Select Game Type</option>
+                            <option value="minecraft">Minecraft</option>
+                            <option value="csgo">Counter-Strike: GO</option>
+                            <option value="rust">Rust</option>
+                            <option value="ark">ARK: Survival Evolved</option>
+                            <option value="gmod">Garry's Mod</option>
+                            <option value="tf2">Team Fortress 2</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="serverStyle">Server Style</label>
+                        <select id="serverStyle" name="serverStyle" required>
+                            <option value="">Select Style</option>
+                            <option value="casual">Casual</option>
+                            <option value="competitive">Competitive</option>
+                            <option value="roleplay">Roleplay</option>
+                            <option value="creative">Creative</option>
+                            <option value="survival">Survival</option>
+                            <option value="pvp">PvP</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="serverFeatures">Key Features (Optional)</label>
+                        <textarea id="serverFeatures" name="serverFeatures" placeholder="Describe your server's unique features, plugins, or special events" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="targetAudience">Target Audience</label>
+                        <select id="targetAudience" name="targetAudience">
+                            <option value="">Select Target Audience</option>
+                            <option value="beginners">Beginners</option>
+                            <option value="experienced">Experienced Players</option>
+                            <option value="all">All Skill Levels</option>
+                            <option value="adults">Adults Only</option>
+                            <option value="family">Family Friendly</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">Generate Description</button>
+                </form>
+                
+                <div id="generatedDescription" class="generated-content" style="display: none;">
+                    <h3>Generated Description</h3>
+                    <div class="description-preview" id="descriptionPreview"></div>
+                    <div class="description-actions">
+                        <button class="btn-secondary" onclick="regenerateDescription()">Regenerate</button>
+                        <button class="btn-primary" onclick="saveDescription()">Save & Share</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=3"></script>
+    <script src="debug-helper.js?v=3"></script>
+</body>
+</html>

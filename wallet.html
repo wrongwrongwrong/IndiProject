@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Wallet - GameServer Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-gamepad"></i>
+                <span>GameServer Pro</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="index.html#services" class="nav-link">Services</a></li>
+                <li><a href="index.html#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="index.html#about" class="nav-link">About</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                <li><a href="dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            </ul>
+            <div class="nav-auth">
+                <div class="user-menu">
+                    <span class="user-name">Welcome, User</span>
+                    <button class="btn-logout" onclick="logout()">Logout</button>
+                </div>
+            </div>
+            <div class="language-switcher">
+                <button class="lang-btn" onclick="toggleLanguageDropdown()">
+                    <i class="fas fa-globe"></i>
+                    <span id="currentLang">EN</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" onclick="switchLanguage('en')">
+                        <span class="lang-flag">🇺🇸</span>
+                        <span class="lang-name">English</span>
+                    </div>
+                    <div class="lang-option" onclick="switchLanguage('zh')">
+                        <span class="lang-flag">🇨🇳</span>
+                        <span class="lang-name">中文</span>
+                    </div>
+                    <div class="lang-option" onclick="switchLanguage('ch')">
+                        <span class="lang-flag">██</span>
+                        <span class="lang-name">Classified</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Wallet Header -->
+    <section class="wallet-header">
+        <div class="container">
+            <div class="wallet-header-content">
+                <h1>Digital Wallet</h1>
+                <p>Manage your funds and transactions securely</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wallet Dashboard -->
+    <section class="wallet-dashboard">
+        <div class="container">
+            <div class="wallet-grid">
+                <!-- Balance Card -->
+                <div class="wallet-card balance-card">
+                    <div class="card-header">
+                        <h3>Current Balance</h3>
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="balance-amount">
+                        <span class="currency">$</span>
+                        <span class="amount" id="currentBalance">0.00</span>
+                    </div>
+                    <div class="balance-actions">
+                        <button class="btn-add-funds" onclick="openAddFundsModal()">
+                            <i class="fas fa-plus"></i> Add Funds
+                        </button>
+                        <button class="btn-transfer" onclick="openTransferModal()">
+                            <i class="fas fa-exchange-alt"></i> Transfer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="wallet-card stats-card">
+                    <div class="card-header">
+                        <h3>Quick Stats</h3>
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalSpent">$0.00</div>
+                            <div class="stat-label">Total Spent</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalEarned">$0.00</div>
+                            <div class="stat-label">Total Earned</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="transactionCount">0</div>
+                            <div class="stat-label">Transactions</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="wallet-card transactions-card">
+                    <div class="card-header">
+                        <h3>Recent Transactions</h3>
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <div class="transactions-list" id="transactionsList">
+                        <div class="no-transactions">
+                            <i class="fas fa-receipt"></i>
+                            <p>No transactions yet</p>
+                        </div>
+                    </div>
+                    <button class="btn-view-all" onclick="viewAllTransactions()">View All Transactions</button>
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="wallet-card payment-methods-card">
+                    <div class="card-header">
+                        <h3>Payment Methods</h3>
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="payment-methods-list" id="paymentMethodsList">
+                        <div class="no-methods">
+                            <i class="fas fa-plus-circle"></i>
+                            <p>No payment methods added</p>
+                            <button class="btn-add-method" onclick="openAddPaymentMethodModal()">Add Payment Method</button>
+                        </div>
+                    </div>
+                <!-- Friends List -->
+                <div class="wallet-card friends-card">
+                    <div class="card-header">
+                        <h3>Friends</h3>
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="friends-list" id="friendsList">
+                        <div class="no-friends">
+                            <i class="fas fa-user-plus"></i>
+                            <p>No friends added yet</p>
+                            <button class="btn-add-friend" onclick="openAddFriendModal()">Add Friend</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Funds Modal -->
+    <div id="addFundsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Funds to Wallet</h2>
+                <span class="close" onclick="closeAddFundsModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="addFundsForm">
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <div class="amount-input">
+                        <span class="currency-symbol">$</span>
+                        <input type="number" id="amount" name="amount" placeholder="0.00" min="1" max="1000" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethod">Payment Method</label>
+                    <select id="paymentMethod" name="paymentMethod" required>
+                        <option value="">Select Payment Method</option>
+                        <option value="credit">Credit Card</option>
+                        <option value="debit">Debit Card</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="crypto">Cryptocurrency</option>
+                    </select>
+                </div>
+                <div class="quick-amounts">
+                    <button type="button" class="quick-amount" onclick="setAmount(10)">$10</button>
+                    <button type="button" class="quick-amount" onclick="setAmount(25)">$25</button>
+                    <button type="button" class="quick-amount" onclick="setAmount(50)">$50</button>
+                    <button type="button" class="quick-amount" onclick="setAmount(100)">$100</button>
+                </div>
+                <button type="submit" class="btn-submit">Add Funds</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transfer Modal -->
+    <div id="transferModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Transfer Funds</h2>
+                <span class="close" onclick="closeTransferModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="transferForm">
+                <div class="form-group">
+                    <label for="transferAmount">Amount</label>
+                    <div class="amount-input">
+                        <span class="currency-symbol">$</span>
+                        <input type="number" id="transferAmount" name="transferAmount" placeholder="0.00" min="1" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="recipient">Recipient</label>
+                    <select id="recipient" name="recipient" required>
+                        <option value="">Select a friend</option>
+                        <!-- Friends will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="transferNote">Note (Optional)</label>
+                    <textarea id="transferNote" name="transferNote" placeholder="Add a note for this transfer" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Transfer Funds</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Friend Modal -->
+    <div id="addFriendModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Friend</h2>
+                <span class="close" onclick="closeAddFriendModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="addFriendForm">
+                <div class="form-group">
+                    <label for="friendEmail">Friend's Email</label>
+                    <input type="email" id="friendEmail" name="friendEmail" placeholder="friend@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="friendName">Friend's Name</label>
+                    <input type="text" id="friendName" name="friendName" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="friendNote">Note (Optional)</label>
+                    <textarea id="friendNote" name="friendNote" placeholder="Add a note about this friend" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Add Friend</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Payment Method Modal -->
+    <div id="addPaymentMethodModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Payment Method</h2>
+                <span class="close" onclick="closeAddPaymentMethodModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="addPaymentMethodForm">
+                <div class="form-group">
+                    <label for="cardType">Card Type</label>
+                    <select id="cardType" name="cardType" required>
+                        <option value="">Select Card Type</option>
+                        <option value="visa">Visa</option>
+                        <option value="mastercard">Mastercard</option>
+                        <option value="amex">American Express</option>
+                        <option value="discover">Discover</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cardholderName">Cardholder Name</label>
+                    <input type="text" id="cardholderName" name="cardholderName" placeholder="John Doe" required>
+                </div>
+                <button type="submit" class="btn-submit">Add Payment Method</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-gamepad"></i>
+                        <span>GameServer Pro</span>
+                    </div>
+                    <p>Professional gaming server descriptions powered by cloud computing.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="index.html#services">Custom Descriptions</a></li>
+                        <li><a href="wallet.html">Digital Wallet</a></li>
+                        <li><a href="index.html#services">Social Sharing</a></li>
+                        <li><a href="dashboard.html">Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="index.html#contact">Help Center</a></li>
+                        <li><a href="index.html#contact">Documentation</a></li>
+                        <li><a href="index.html#contact">API Reference</a></li>
+                        <li><a href="index.html#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#contact">Privacy Policy</a></li>
+                        <li><a href="index.html#contact">Terms of Service</a></li>
+                        <li><a href="index.html#contact">Careers</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 GameServer Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="wallet.js"></script>
+</body>
+</html>

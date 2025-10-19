@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - GameServer Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-gamepad"></i>
+                <span>GameServer Pro</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link" data-lang="home">Home</a></li>
+                <li><a href="services.html" class="nav-link active" data-lang="services">Services</a></li>
+                <li><a href="about.html" class="nav-link" data-lang="about">About</a></li>
+                <li><a href="contact.html" class="nav-link" data-lang="contact">Contact</a></li>
+            </ul>
+            <div class="nav-auth">
+                <div class="user-menu">
+                    <span class="user-name">Welcome, User</span>
+                    <button class="btn-logout" onclick="logout()">Logout</button>
+                </div>
+            </div>
+            <div class="language-switcher">
+                <button class="lang-btn" onclick="toggleLanguageDropdown()">
+                    <i class="fas fa-globe"></i>
+                    <span id="currentLang">EN</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" onclick="switchLanguage('en')">
+                        <span class="lang-flag">🇺🇸</span>
+                        <span class="lang-name">English</span>
+                    </div>
+                    <div class="lang-option" onclick="switchLanguage('zh')">
+                        <span class="lang-flag">🇨🇳</span>
+                        <span class="lang-name">中文</span>
+                    </div>
+                    <div class="lang-option" onclick="switchLanguage('ch')">
+                        <span class="lang-flag">██</span>
+                        <span class="lang-name">Classified</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Services Hero -->
+    <section class="hero services-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 data-lang="servicesHeroTitle">Our Services</h1>
+                <p data-lang="servicesHeroSubtitle">Professional gaming server solutions powered by cloud computing</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-lang="whatWeOffer">What We Offer</h2>
+                <p data-lang="everythingYouNeed">Comprehensive solutions for your gaming server needs</p>
+            </div>
+            
+            <div class="services-grid">
+                <!-- Custom Descriptions -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-pen-fancy"></i>
+                    </div>
+                    <h3 data-lang="customDescriptions">Custom Descriptions</h3>
+                    <p data-lang="customDescriptionsDesc">Get professionally crafted server descriptions that attract players and showcase your server's unique features.</p>
+                    <ul class="service-features">
+                        <li>AI-powered content generation</li>
+                        <li>Multiple style options</li>
+                        <li>SEO optimized</li>
+                        <li>Unlimited revisions</li>
+                    </ul>
+                    <button class="btn-service" onclick="openDescriptionGenerator()">Create Description</button>
+                </div>
+
+                <!-- Digital Wallet -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3 data-lang="digitalWallet">Digital Wallet</h3>
+                    <p data-lang="digitalWalletDesc">Secure digital wallet system for managing funds, transactions, and payments within the gaming ecosystem.</p>
+                    <ul class="service-features">
+                        <li>Secure transactions</li>
+                        <li>Peer-to-peer transfers</li>
+                        <li>Transaction history</li>
+                        <li>Multiple payment methods</li>
+                    </ul>
+                    <button class="btn-service" onclick="openWallet()">Manage Wallet</button>
+                </div>
+
+                <!-- Social Sharing -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <h3 data-lang="socialSharing">Social Sharing</h3>
+                    <p data-lang="socialSharingDesc">Share your server descriptions with friends and grow your community organically through social networks.</p>
+                    <ul class="service-features">
+                        <li>Social media integration</li>
+                        <li>Community building</li>
+                        <li>Analytics tracking</li>
+                        <li>Viral sharing tools</li>
+                    </ul>
+                    <button class="btn-service" onclick="openSharing()">Share Server</button>
+                </div>
+
+                <!-- Analytics Dashboard -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Track your server's performance, player engagement, and growth metrics with our comprehensive analytics.</p>
+                    <ul class="service-features">
+                        <li>Real-time metrics</li>
+                        <li>Player engagement data</li>
+                        <li>Growth tracking</li>
+                        <li>Custom reports</li>
+                    </ul>
+                    <button class="btn-service" onclick="openDashboard()">View Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Simple Pricing</h2>
+                <p>Choose the plan that fits your needs</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <!-- Basic Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Basic</h3>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">9</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 5 Custom Descriptions</li>
+                        <li><i class="fas fa-check"></i> Basic Analytics</li>
+                        <li><i class="fas fa-check"></i> Email Support</li>
+                        <li><i class="fas fa-check"></i> Standard Templates</li>
+                    </ul>
+                    <button class="btn-pricing">Get Started</button>
+                </div>
+
+                <!-- Pro Plan -->
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Pro</h3>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">29</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Unlimited Descriptions</li>
+                        <li><i class="fas fa-check"></i> Advanced Analytics</li>
+                        <li><i class="fas fa-check"></i> Priority Support</li>
+                        <li><i class="fas fa-check"></i> Custom Templates</li>
+                        <li><i class="fas fa-check"></i> Social Sharing Tools</li>
+                    </ul>
+                    <button class="btn-pricing">Get Started</button>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">99</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Everything in Pro</li>
+                        <li><i class="fas fa-check"></i> White-label Solution</li>
+                        <li><i class="fas fa-check"></i> Dedicated Support</li>
+                        <li><i class="fas fa-check"></i> Custom Integrations</li>
+                        <li><i class="fas fa-check"></i> API Access</li>
+                    </ul>
+                    <button class="btn-pricing">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-gamepad"></i>
+                        <span>GameServer Pro</span>
+                    </div>
+                    <p>Professional gaming server descriptions powered by cloud computing.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html">Custom Descriptions</a></li>
+                        <li><a href="wallet.html">Digital Wallet</a></li>
+                        <li><a href="services.html">Social Sharing</a></li>
+                        <li><a href="dashboard.html">Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="contact.html">Documentation</a></li>
+                        <li><a href="contact.html">API Reference</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Privacy Policy</a></li>
+                        <li><a href="contact.html">Terms of Service</a></li>
+                        <li><a href="contact.html">Careers</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 GameServer Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
