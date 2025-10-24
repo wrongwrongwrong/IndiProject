@@ -1047,7 +1047,23 @@ function switchToLogin() {
 
 // Service Functions
 function openDescriptionGenerator() {
-    openDescriptionModal();
+    if (!isLoggedIn) {
+        showMessage('Please login to access this feature.', 'error');
+        openLoginModal();
+        return;
+    }
+    
+    // Check if we're on the dashboard page
+    if (window.location.pathname === '/dashboard') {
+        // Open modal on dashboard page
+        const modal = document.getElementById('descriptionModal');
+        if (modal) {
+            modal.classList.add('active');
+        }
+    } else {
+        // Redirect to index page for other pages
+        window.location.href = '/';
+    }
 }
 
 function openWallet() {
@@ -1062,7 +1078,7 @@ function openWallet() {
     
     console.log('Redirecting to wallet.html');
     // Redirect to wallet page
-    window.location.href = '04-wallet.html';
+    window.location.href = '/wallet';
 }
 
 function openSharing() {
@@ -1077,7 +1093,16 @@ function openSharing() {
     
     console.log('Redirecting to dashboard.html');
     // Redirect to dashboard to manage and share descriptions
-    window.location.href = '02-dashboard.html';
+    window.location.href = '/dashboard';
+}
+
+function openDashboard() {
+    console.log('openDashboard called, isLoggedIn:', isLoggedIn);
+    if (isLoggedIn) {
+        window.location.href = '/dashboard';
+    } else {
+        openLoginModal();
+    }
 }
 
 // Form Handlers
@@ -1774,6 +1799,7 @@ window.switchToLogin = switchToLogin;
 window.openDescriptionGenerator = openDescriptionGenerator;
 window.openWallet = openWallet;
 window.openSharing = openSharing;
+window.openDashboard = openDashboard;
 window.scrollToServices = scrollToServices;
 window.scrollToAbout = scrollToAbout;
 window.scrollToSection = scrollToSection;

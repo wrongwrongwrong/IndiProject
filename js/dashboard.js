@@ -429,7 +429,7 @@ function initializeDashboardCharts() {
 // Open description generator
 function openDescriptionGenerator() {
     // Redirect to main page with description modal
-    window.location.href = '03-index.html#description';
+    window.location.href = '/#description';
 }
 
 // View description
@@ -472,7 +472,7 @@ function editDescription(index) {
     if (description) {
         // Redirect to main page with pre-filled form
         localStorage.setItem('gameserverpro_edit_description', JSON.stringify({index, description}));
-        window.location.href = '03-index.html#description';
+        window.location.href = '/#description';
     }
 }
 
@@ -521,7 +521,7 @@ function logout() {
     localStorage.removeItem('gameserverpro_token');
     localStorage.removeItem('gameserverpro_descriptions');
     localStorage.removeItem('gameserverpro_dashboard');
-    window.location.href = '03-index.html';
+    window.location.href = '/';
 }
 
 // Message function (if not defined in script.js)
@@ -558,7 +558,7 @@ function showMessage(message, type = 'success') {
 function checkAuth() {
     const user = localStorage.getItem('gameserverpro_user');
     if (!user) {
-        window.location.href = '03-index.html';
+        window.location.href = '/';
         return false;
     }
     return true;

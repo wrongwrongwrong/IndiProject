@@ -185,7 +185,7 @@ function checkAuth() {
     
     if (!user || !token) {
         console.log('User not authenticated, redirecting to login');
-        window.location.href = '03-index.html';
+        window.location.href = '/';
         return false;
     }
     

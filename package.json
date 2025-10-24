@@ -1,0 +1,13 @@
+{
+  "name": "gameserver-pro-local",
+  "version": "1.0.0",
+  "description": "Local development server for GameServer Pro",
+  "main": "local-server.js",
+  "scripts": {
+    "start": "node local-server.js",
+    "dev": "node local-server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

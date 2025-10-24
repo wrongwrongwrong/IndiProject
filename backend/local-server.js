@@ -557,44 +557,74 @@ app.delete('/api/contact/messages/:id', (req, res) => {
 });
 
 // Static file serving (must come after API routes)
-app.use(express.static(path.join(__dirname, '../')));
+app.use(express.static(path.join(__dirname, './')));
 
 // Serve CSS files from css folder
-app.use('/css', express.static(path.join(__dirname, '../css')));
+app.use('/css', express.static(path.join(__dirname, './css')));
 
 // Serve JS files from js folder
-app.use('/js', express.static(path.join(__dirname, '../js')));
+app.use('/js', express.static(path.join(__dirname, './js')));
 
 // Serve HTML files from html folder
-app.use('/html', express.static(path.join(__dirname, '../html')));
+app.use('/html', express.static(path.join(__dirname, './html')));
+
+// Redirect old file names to proper routes
+app.get('/03-index.html', (req, res) => {
+    const hash = req.url.includes('#') ? req.url.substring(req.url.indexOf('#')) : '';
+    res.redirect('/' + hash);
+});
+
+app.get('/05-services.html', (req, res) => {
+    res.redirect('/services');
+});
+
+app.get('/06-about.html', (req, res) => {
+    res.redirect('/about');
+});
+
+app.get('/07-contact.html', (req, res) => {
+    res.redirect('/contact');
+});
+
+app.get('/02-dashboard.html', (req, res) => {
+    res.redirect('/dashboard');
+});
+
+app.get('/04-wallet.html', (req, res) => {
+    res.redirect('/wallet');
+});
+
+app.get('/01-admin.html', (req, res) => {
+    res.redirect('/admin');
+});
 
 // Serve the frontend
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../html/03-index.html'));
+    res.sendFile(path.join(__dirname, './html/03-index.html'));
 });
 
 app.get('/wallet', (req, res) => {
-    res.sendFile(path.join(__dirname, '../html/04-wallet.html'));
+    res.sendFile(path.join(__dirname, './html/04-wallet.html'));
 });
 
 app.get('/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, '../html/02-dashboard.html'));
+    res.sendFile(path.join(__dirname, './html/02-dashboard.html'));
 });
 
 app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, '../html/01-admin.html'));
+    res.sendFile(path.join(__dirname, './html/01-admin.html'));
 });
 
 app.get('/about', (req, res) => {
-    res.sendFile(path.join(__dirname, '../html/06-about.html'));
+    res.sendFile(path.join(__dirname, './html/06-about.html'));
 });
 
 app.get('/contact', (req, res) => {
-    res.sendFile(path.join(__dirname, '../html/07-contact.html'));
+    res.sendFile(path.join(__dirname, './html/07-contact.html'));
 });
 
 app.get('/services', (req, res) => {
-    res.sendFile(path.join(__dirname, '../html/05-services.html'));
+    res.sendFile(path.join(__dirname, './html/05-services.html'));
 });
 
 // Start server

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - GameServer Pro</title>
-    <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/layout.css">
-    <link rel="stylesheet" href="../css/component.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/component.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -14,17 +14,17 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="03-index.html" class="nav-logo">
+            <a href="/" class="nav-logo">
                 <i class="fas fa-gamepad"></i>
                 <span>GameServer Pro</span>
             </a>
             <ul class="nav-menu">
-                <li><a href="03-index.html" class="nav-link">Home</a></li>
-                <li><a href="index.html#services" class="nav-link">Services</a></li>
-                <li><a href="index.html#pricing" class="nav-link">Pricing</a></li>
-                <li><a href="index.html#about" class="nav-link">About</a></li>
-                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
-                <li><a href="04-wallet.html" class="nav-link"><i class="fas fa-wallet"></i> My Wallet</a></li>
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/#services" class="nav-link">Services</a></li>
+                <li><a href="/#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="/#about" class="nav-link">About</a></li>
+                <li><a href="/#contact" class="nav-link">Contact</a></li>
+                <li><a href="/wallet" class="nav-link"><i class="fas fa-wallet"></i> My Wallet</a></li>
             </ul>
             <div class="nav-auth">
                 <div class="auth-buttons">
@@ -63,128 +63,6 @@
             </div>
         </div>
     </nav>
-
-    <!-- Dashboard Hero - Unauthenticated -->
-    <section class="hero hero-banner dashboard-hero" id="hero-unauthenticated">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>Welcome to GameServer Pro</h1>
-                    <p class="hero-subtitle">Create professional gaming server descriptions and manage your community</p>
-                    <div class="hero-features">
-                        <div class="feature-badge">
-                            <i class="fas fa-chart-bar"></i>
-                            <span>Real-time Analytics</span>
-                        </div>
-                        <div class="feature-badge">
-                            <i class="fas fa-file-alt"></i>
-                            <span>Description Management</span>
-                        </div>
-                        <div class="feature-badge">
-                            <i class="fas fa-share-alt"></i>
-                            <span>Social Sharing</span>
-                        </div>
-                    </div>
-                    <div class="hero-actions">
-                        <button class="btn-primary btn-large" onclick="openLogin()">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Login
-                        </button>
-                        <button class="btn-secondary btn-medium" onclick="openSignup()">
-                            <i class="fas fa-user-plus"></i>
-                            Sign Up
-                        </button>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <div class="cards-preview">
-                        <div class="preview-card">
-                            <div class="card-icon">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <h4>Performance Metrics</h4>
-                            <p>Track growth</p>
-                        </div>
-                        <div class="preview-card">
-                            <div class="card-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <h4>Player Engagement</h4>
-                            <p>Community insights</p>
-                        </div>
-                        <div class="preview-card">
-                            <div class="card-icon">
-                                <i class="fas fa-trophy"></i>
-                            </div>
-                            <h4>Achievements</h4>
-                            <p>Your milestones</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Dashboard Hero - Authenticated -->
-    <section class="hero hero-banner dashboard-hero" id="hero-authenticated" style="display: none;">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>Welcome back, <span id="welcome-user-name">User</span>!</h1>
-                    <p class="hero-subtitle">Manage your server descriptions and track your performance</p>
-                    <div class="hero-features">
-                        <div class="feature-badge">
-                            <i class="fas fa-chart-bar"></i>
-                            <span>Real-time Analytics</span>
-                        </div>
-                        <div class="feature-badge">
-                            <i class="fas fa-file-alt"></i>
-                            <span>Description Management</span>
-                        </div>
-                        <div class="feature-badge">
-                            <i class="fas fa-share-alt"></i>
-                            <span>Social Sharing</span>
-                        </div>
-                    </div>
-                    <div class="hero-actions">
-                        <button class="btn-primary" onclick="scrollToSection('dashboard-content')">
-                            <i class="fas fa-tachometer-alt"></i>
-                            View Dashboard
-                        </button>
-                        <button class="btn-secondary" onclick="openDescriptionGenerator()">
-                            <i class="fas fa-plus"></i>
-                            Create Description
-                        </button>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <div class="cards-preview">
-                        <div class="preview-card">
-                            <div class="card-icon">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <h4>Performance Metrics</h4>
-                            <p>Track growth</p>
-                        </div>
-                        <div class="preview-card">
-                            <div class="card-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <h4>Player Engagement</h4>
-                            <p>Community insights</p>
-                        </div>
-                        <div class="preview-card">
-                            <div class="card-icon">
-                                <i class="fas fa-trophy"></i>
-                            </div>
-                            <h4>Achievements</h4>
-                            <p>Your milestones</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Dashboard Content -->
     <section class="dashboard-content">
@@ -306,7 +184,7 @@
                             <i class="fas fa-edit"></i>
                             <span>Create Description</span>
                         </button>
-                        <button class="action-btn" onclick="window.location.href='wallet.html'">
+                        <button class="action-btn" onclick="window.location.href='/wallet'">
                             <i class="fas fa-wallet"></i>
                             <span>Manage Wallet</span>
                         </button>
@@ -338,28 +216,28 @@
                 <div class="footer-section">
                     <h4>Services</h4>
                     <ul>
-                        <li><a href="index.html#services">Custom Descriptions</a></li>
-                        <li><a href="04-wallet.html">Digital Wallet</a></li>
-                        <li><a href="index.html#services">Social Sharing</a></li>
-                        <li><a href="02-dashboard.html">Analytics</a></li>
+                        <li><a href="/#services">Custom Descriptions</a></li>
+                        <li><a href="/wallet">Digital Wallet</a></li>
+                        <li><a href="/#services">Social Sharing</a></li>
+                        <li><a href="/dashboard">Analytics</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>Support</h4>
                     <ul>
-                        <li><a href="index.html#contact">Help Center</a></li>
-                        <li><a href="index.html#contact">Documentation</a></li>
-                        <li><a href="index.html#contact">API Reference</a></li>
-                        <li><a href="index.html#contact">Contact Us</a></li>
+                        <li><a href="/#contact">Help Center</a></li>
+                        <li><a href="/#contact">Documentation</a></li>
+                        <li><a href="/#contact">API Reference</a></li>
+                        <li><a href="/#contact">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>Company</h4>
                     <ul>
-                        <li><a href="index.html#about">About Us</a></li>
-                        <li><a href="index.html#contact">Privacy Policy</a></li>
-                        <li><a href="index.html#contact">Terms of Service</a></li>
-                        <li><a href="index.html#contact">Careers</a></li>
+                        <li><a href="/#about">About Us</a></li>
+                        <li><a href="/#contact">Privacy Policy</a></li>
+                        <li><a href="/#contact">Terms of Service</a></li>
+                        <li><a href="/#contact">Careers</a></li>
                         <li><a href="#" onclick="openAdminLogin()">Admin Login</a></li>
                     </ul>
                 </div>
@@ -448,9 +326,82 @@
         </div>
     </div>
 
+    <!-- Description Modal -->
+    <div id="descriptionModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>Create Custom Server Description</h2>
+                <span class="close" onclick="closeDescriptionModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="descriptionForm">
+                    <div class="form-group">
+                        <label for="serverName">Server Name</label>
+                        <input type="text" id="serverName" name="serverName" placeholder="Enter your server name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gameType">Game Type</label>
+                        <select id="gameType" name="gameType" required>
+                            <option value="">Select Game Type</option>
+                            <option value="minecraft">Minecraft</option>
+                            <option value="csgo">Counter-Strike: GO</option>
+                            <option value="rust">Rust</option>
+                            <option value="ark">ARK: Survival Evolved</option>
+                            <option value="gmod">Garry's Mod</option>
+                            <option value="tf2">Team Fortress 2</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="serverStyle">Server Style</label>
+                        <select id="serverStyle" name="serverStyle" required>
+                            <option value="">Select Style</option>
+                            <option value="casual">Casual</option>
+                            <option value="competitive">Competitive</option>
+                            <option value="roleplay">Roleplay</option>
+                            <option value="creative">Creative</option>
+                            <option value="survival">Survival</option>
+                            <option value="pvp">PvP</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="serverFeatures">Key Features (Optional)</label>
+                        <textarea id="serverFeatures" name="serverFeatures" placeholder="Describe your server's unique features, plugins, or special events" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="targetAudience">Target Audience</label>
+                        <select id="targetAudience" name="targetAudience">
+                            <option value="">Select Target Audience</option>
+                            <option value="beginners">Beginners</option>
+                            <option value="experienced">Experienced Players</option>
+                            <option value="all">All Skill Levels</option>
+                            <option value="adults">Adults Only</option>
+                            <option value="family">Family Friendly</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">Generate Description</button>
+                </form>
+                
+                <div id="generatedDescription" class="generated-content" style="display: none;">
+                    <h3>Generated Description</h3>
+                    <div class="description-preview" id="descriptionPreview"></div>
+                    <div class="description-actions">
+                        <button class="btn-secondary" onclick="regenerateDescription()">Regenerate</button>
+                        <button class="btn-primary" onclick="saveDescription()">Save & Share</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../js/auth-manager.js"></script>
-    <script src="../js/script.js"></script>
-    <script src="../js/dashboard.js"></script>
+    <script src="/js/auth-manager.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/dashboard.js"></script>
 </body>
 </html>
